@@ -24,6 +24,7 @@ kotlin {
                 api "org.hexworks.cobalt:cobalt.databinding:$cobalt_version"
                 api "org.hexworks.cobalt:cobalt.logging:$cobalt_version"
                 api "org.hexworks.cobalt:cobalt.datatypes:$cobalt_version"
+                api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
             }
         }
         commonTest {
