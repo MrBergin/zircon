@@ -3,9 +3,10 @@ package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.data.DrawSurfaceSnapshot
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -27,6 +28,7 @@ import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
+import java.util.concurrent.Executors
 import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
@@ -60,15 +62,15 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         canvas.preferredSize = Dimension(
                 tileGrid.widthInPixels,
                 tileGrid.heightInPixels)
-        canvas.minimumSize = Dimension(tileGrid.currentTileset().width, tileGrid.currentTileset().height)
+        canvas.minimumSize = Dimension(tileGrid.tileset.width, tileGrid.tileset.height)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
         canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
         canvas.addKeyListener(KeyboardEventListener(tileGrid))
         val newListener = object : MouseEventListener(
-                fontWidth = tileGrid.currentTileset().width,
-                fontHeight = tileGrid.currentTileset().height,
+                fontWidth = tileGrid.tileset.width,
+                fontHeight = tileGrid.tileset.height,
                 tileGrid = tileGrid) {
             override fun mouseClicked(e: MouseEvent) {
                 super.mouseClicked(e)
@@ -103,6 +105,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         frame.dispose()
     }
 
+    private val executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
         val bs = getBufferStrategy()
@@ -115,18 +119,32 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val gc = configureGraphics(img.graphics)
         gc.fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
 
-        val snapshot = tileGrid.createSnapshot()
         tileGrid.updateAnimations(now, tileGrid)
-        renderTiles(
-                graphics = gc,
-                snapshot = snapshot,
-                tileset = tilesetLoader.loadTilesetFrom(tileGrid.currentTileset()))
-        tileGrid.layers.forEach { layer ->
-            renderTiles(
-                    graphics = gc,
-                    snapshot = layer.createSnapshot(),
-                    tileset = tilesetLoader.loadTilesetFrom(layer.currentTileset()))
+        val layerStates = tileGrid.layerStates
+
+        val tilesToRender = linkedMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
+
+        layerStates.forEach { state ->
+            state.tiles.forEach { (tilePos, tile) ->
+                val finalPos = tilePos + state.position
+                tilesToRender.getOrPut(finalPos) { mutableListOf() }
+                if (tile.isOpaque()) {
+                    tilesToRender[finalPos] = mutableListOf(tile to state.tileset)
+                } else {
+                    tilesToRender[finalPos]?.add(tile to state.tileset)
+                }
+            }
         }
+
+        tilesToRender.map { (pos, tiles) ->
+            executor.submit {
+                tiles.forEach { (tile, tileset) ->
+                    renderTile(gc, pos, tile, tilesetLoader.loadTilesetFrom(tileset))
+                }
+            }
+        }.forEach { it.get() }
+
+
         if (shouldDrawCursor()) {
             tileGrid.getTileAt(tileGrid.cursorPosition()).map {
                 drawCursor(gc, it, tileGrid.cursorPosition())
@@ -171,10 +189,34 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         return gc
     }
 
+    private fun renderTile(graphics: Graphics2D,
+                           position: Position,
+                           tile: Tile,
+                           tileset: Tileset<Graphics2D>) {
+        if (tile !== Tile.empty()) {
+            val actualTile = if (tile.isBlinking() && blinkOn) {
+                tile.withBackgroundColor(tile.foregroundColor)
+                        .withForegroundColor(tile.backgroundColor)
+            } else {
+                tile
+            }
+            val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
+                tilesetLoader.loadTilesetFrom(actualTile.tileset)
+            } else {
+                tileset
+            }
+
+            actualTileset.drawTile(
+                    tile = actualTile,
+                    surface = graphics,
+                    position = position)
+        }
+    }
+
     private fun renderTiles(graphics: Graphics2D,
-                            snapshot: DrawSurfaceSnapshot,
+                            state: LayerState,
                             tileset: Tileset<Graphics2D>) {
-        snapshot.tiles.forEach { (pos, tile) ->
+        state.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 val actualTile = if (tile.isBlinking() && blinkOn) {
                     tile.withBackgroundColor(tile.foregroundColor)
@@ -183,7 +225,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                     tile
                 }
                 val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
-                    tilesetLoader.loadTilesetFrom(actualTile.currentTileset())
+                    tilesetLoader.loadTilesetFrom(actualTile.tileset)
                 } else {
                     tileset
                 }
@@ -191,14 +233,14 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                 actualTileset.drawTile(
                         tile = actualTile,
                         surface = graphics,
-                        position = pos)
+                        position = pos + state.position)
             }
         }
     }
 
     private fun drawCursor(graphics: Graphics, character: Tile, position: Position) {
-        val tileWidth = tileGrid.currentTileset().width
-        val tileHeight = tileGrid.currentTileset().height
+        val tileWidth = tileGrid.tileset.width
+        val tileHeight = tileGrid.tileset.height
         val x = position.x * tileWidth
         val y = position.y * tileHeight
         val cursorColor = config.cursorColor.toAWTColor()

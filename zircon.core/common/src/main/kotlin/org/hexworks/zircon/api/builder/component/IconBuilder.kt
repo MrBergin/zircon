@@ -35,7 +35,7 @@ data class IconBuilder(
         return DefaultIcon(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialIcon = icon.get(),

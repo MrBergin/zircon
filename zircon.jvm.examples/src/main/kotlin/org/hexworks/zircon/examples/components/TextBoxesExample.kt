@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.AppConfigs
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
@@ -20,7 +21,7 @@ object TextBoxesExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(60, 30))
                 .build())

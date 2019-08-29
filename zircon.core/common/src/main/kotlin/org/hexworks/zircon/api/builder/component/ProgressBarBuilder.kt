@@ -45,7 +45,7 @@ data class ProgressBarBuilder(
         return DefaultProgressBar(
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 range = range,

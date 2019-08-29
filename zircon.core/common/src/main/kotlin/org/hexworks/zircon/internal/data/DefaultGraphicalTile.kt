@@ -13,8 +13,5 @@ data class DefaultGraphicalTile(override val name: String,
 
     override fun generateCacheKey() = cacheKey
 
-    override fun currentTileset(): TilesetResource {
-        return tileset
-    }
 
 }

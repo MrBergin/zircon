@@ -7,22 +7,31 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.resource.ColorThemeResource
+import org.hexworks.zircon.internal.util.PersistentList
+import org.hexworks.zircon.platform.factory.PersistentListFactory
+import kotlin.jvm.Synchronized
 
 /**
  * This [InternalComponentContainer] holds a "main" container which holds components
  * and a stack of modal containers which hold modals.
  */
-// TODO: test me pls
 class CompositeComponentContainer(
         private val metadata: ComponentMetadata,
-        private val mainContainer: InternalComponentContainer = buildContainer(metadata)) : InternalComponentContainer {
+        private val mainContainer: InternalComponentContainer = buildContainer(metadata))
+    : InternalComponentContainer {
+
+    override val layerStates: PersistentList<LayerState>
+        get() {
+            return PersistentListFactory.create<LayerState>()
+                    .addAll(containerStack.flatMap { it.layerStates })
+        }
 
     private val containerStack = mutableListOf<InternalComponentContainer>()
 
@@ -32,18 +41,22 @@ class CompositeComponentContainer(
 
     fun isMainContainerActive() = mainContainer.isActive()
 
+    @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
         return containerStack.lastOrNull()?.dispatch(event) ?: Pass
     }
 
+    @Synchronized
     override fun isActive(): Boolean {
         return containerStack.any(InternalComponentContainer::isActive)
     }
 
+    @Synchronized
     override fun activate() {
         mainContainer.activate()
     }
 
+    @Synchronized
     override fun deactivate() {
         containerStack.forEach {
             it.deactivate()
@@ -52,22 +65,22 @@ class CompositeComponentContainer(
         containerStack.add(mainContainer)
     }
 
-    override fun toFlattenedLayers(): Iterable<Layer> {
-        return containerStack.flatMap { it.toFlattenedLayers() }
-    }
-
+    @Synchronized
     override fun addComponent(component: Component) {
         mainContainer.addComponent(component)
     }
 
+    @Synchronized
     override fun removeComponent(component: Component): Boolean {
         return mainContainer.removeComponent(component)
     }
 
+    @Synchronized
     override fun applyColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return mainContainer.applyColorTheme(colorTheme)
     }
 
+    @Synchronized
     fun addModal(modal: Modal<out ModalResult>) {
         containerStack.lastOrNull()?.deactivate()
         val modalContainer = buildContainer(metadata)

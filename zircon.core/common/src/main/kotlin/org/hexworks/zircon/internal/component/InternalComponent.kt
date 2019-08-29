@@ -3,14 +3,15 @@ package org.hexworks.zircon.internal.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
 import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
 import org.hexworks.zircon.internal.uievent.MouseEventAdapter
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentMoved
 
 /**
  * A [InternalComponent] is a specialization of the [Component] interface which adds
@@ -18,7 +19,23 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, ComponentEventAdapter, Focusable, KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
+interface InternalComponent : Component, ComponentEventAdapter, Focusable,
+        KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
+
+    /**
+     * The state of this [InternalComponent].
+     */
+    val state: LayerState
+
+    /**
+     * The immediate child [Component]s of this [Container].
+     */
+    val children: Iterable<InternalComponent>
+
+    /**
+     * All descendant [Component]s of this [Container].
+     */
+    val descendants: Iterable<InternalComponent>
 
     /**
      * The [org.hexworks.zircon.api.graphics.TileGraphics] which this
@@ -26,8 +43,14 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable, Keybo
      */
     val graphics: TileGraphics
 
-    // TODO: make val
     override fun isAttached(): Boolean = fetchParent().isPresent
+
+    /**
+     * Moves this [InternalComponent] to the given [position].
+     * If [signalComponentChange] is `true` this funciton will send
+     * a [ComponentMoved] event.
+     */
+    fun moveTo(position: Position, signalComponentChange: Boolean)
 
     /**
      * Attaches this [Component] to the given parent [Container].
@@ -44,19 +67,7 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable, Keybo
      * If no [InternalComponent] intersects with the given `position` an
      * empty [Maybe] is returned.
      */
-    fun fetchComponentByPosition(position: Position): Maybe<out InternalComponent>
-
-    /**
-     * Returns the this [Component] and its children (if any)
-     * flattened into an [Iterable] of [Layer]s.
-     */
-    fun toFlattenedLayers(): Iterable<Layer>
-
-    /**
-     * Returns the this [Component] and its children (if any)
-     * flattened into an [Iterable] of [InternalComponent]s.
-     */
-    fun toFlattenedComponents(): Iterable<InternalComponent>
+    fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
 
     /**
      * Returns the parent of this [Component] (if any).

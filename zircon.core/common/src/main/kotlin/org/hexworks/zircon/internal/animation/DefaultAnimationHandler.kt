@@ -13,6 +13,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.platform.extension.getOrDefault
 import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
+// TODO: make this thread-safe
 internal class DefaultAnimationHandler : InternalAnimationHandler, Closeable {
 
     private val nextUpdatesForAnimations = HashMap<Identifier, Long>()

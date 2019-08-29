@@ -1,16 +1,25 @@
 package org.hexworks.zircon.internal.grid
 
-import org.hexworks.zircon.api.behavior.Layerable
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.animation.InternalAnimationHandler
+import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 interface InternalTileGrid
-    : TileGrid, InternalAnimationHandler, UIEventProcessor {
+    : TileGrid, InternalAnimationHandler, InternalLayerable, UIEventProcessor {
 
-    var backend: TileGraphics
-    var layerable: Layerable
+    /**
+     * The base layer of this [InternalTileGrid] (at index `0`).
+     */
+    var backend: Layer
+    /**
+     * The [InternalLayerable] this [InternalTileGrid] currently uses.
+     */
+    var layerable: InternalLayerable
+    /**
+     * The [InternalAnimationHandler] this [InternalTileGrid] currently uses.
+     */
     var animationHandler: InternalAnimationHandler
 
     /**

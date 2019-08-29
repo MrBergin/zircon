@@ -70,7 +70,7 @@ data class ModalBuilder<T : ModalResult>(
                 darkenPercent = darkenPercent,
                 componentMetadata = ComponentMetadata(
                         size = size,
-                        position = position,
+                        relativePosition = position,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 renderingStrategy = componentRenderer)

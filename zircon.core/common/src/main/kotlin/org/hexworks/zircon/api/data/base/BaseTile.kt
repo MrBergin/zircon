@@ -14,10 +14,6 @@ import org.hexworks.zircon.api.modifier.SimpleModifiers.*
  */
 abstract class BaseTile : Tile {
 
-    override fun drawOnto(surface: DrawSurface, position: Position) {
-        surface.setTileAt(position, this)
-    }
-
     override fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
 
     override fun asImageTile() = Maybe.ofNullable(this as? ImageTile)

@@ -9,4 +9,15 @@ import org.hexworks.zircon.api.component.Container
  * a clean API for [Container]s but enables Zircon and the developers of custom [Container]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalContainer : Container, InternalComponent
+interface InternalContainer : Container, InternalComponent {
+
+    /**
+     * The immediate child [Component]s of this [Container].
+     */
+    override val children: Iterable<InternalComponent>
+
+    /**
+     * All descendant [Component]s of this [Container].
+     */
+    override val descendants: Iterable<InternalComponent>
+}

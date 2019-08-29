@@ -9,6 +9,8 @@ import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.TrueTypeFontResources
+import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.shadow
 
 object NonSquareTilesetExample {
 
@@ -34,9 +36,7 @@ object NonSquareTilesetExample {
                 .build()
 
         val panel = Components.panel()
-                .withTitle("Multi-size test")
-                .wrapWithBox(true)
-                .wrapWithShadow(true)
+                .withDecorations(shadow(), box(title = "Multi-size test"))
                 .withPosition(Positions.create(2, 2))
                 .withSize(Sizes.create(40, 30))
                 .build()

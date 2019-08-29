@@ -37,7 +37,7 @@ public class CreatingAScreen {
                         .build())
                 .build();
 
-        screen.draw(image, Positions.zero());
+        screen.draw(image, Positions.zero(), image.getSize());
 
         screen.display();
     }

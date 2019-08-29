@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
@@ -11,7 +12,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.graphics.DefaultLayer
+import org.hexworks.zircon.internal.graphics.ThreadSafeLayer
 
 /**
  * Use this to build [Layer]s. Defaults are:
@@ -43,6 +44,12 @@ data class LayerBuilder(
     }
 
     /**
+     * Sets the size for the new [org.hexworks.zircon.api.graphics.Layer].
+     * Default is 1x1.
+     */
+    fun withSize(width: Int, height: Int) = withSize(Sizes.create(width, height))
+
+    /**
      * Sets the `offset` for the new [org.hexworks.zircon.api.graphics.Layer].
      * Default is 0x0.
      */
@@ -67,15 +74,16 @@ data class LayerBuilder(
     }
 
     override fun build(): Layer = if (tileGraphics.isPresent) {
-        DefaultLayer(
-                position = offset,
-                backend = tileGraphics.get())
+        ThreadSafeLayer(
+                initialPosition = offset,
+                initialContents = tileGraphics.get())
     } else {
-        DefaultLayer(
-                position = offset,
-                backend = TileGraphicsBuilder(
-                        tileset = tileset,
-                        size = size).build())
+        ThreadSafeLayer(
+                initialPosition = offset,
+                initialContents = TileGraphicsBuilder.newBuilder()
+                        .withSize(size)
+                        .withTileset(tileset)
+                        .buildThreadSafeTileGraphics())
     }.apply {
         if (filler != Tiles.empty()) fill(filler)
     }

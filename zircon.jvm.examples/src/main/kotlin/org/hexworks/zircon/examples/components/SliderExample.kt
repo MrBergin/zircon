@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.MouseEventType
 
 object SliderExample {
 
@@ -21,7 +22,7 @@ object SliderExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-
+        TODO("fix me")
         val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withCursorBlinking(true)
@@ -84,6 +85,9 @@ object SliderExample {
                 .withSize(1,1)
                 .withDecorations()
                 .build().apply {
+                    processMouseEvents(MouseEventType.MOUSE_PRESSED) { _, _ ->
+                        slider3.decrementCurrentValue()
+                    }
                     processComponentEvents(ComponentEventType.ACTIVATED) {
                         slider3.decrementCurrentValue()
                     }

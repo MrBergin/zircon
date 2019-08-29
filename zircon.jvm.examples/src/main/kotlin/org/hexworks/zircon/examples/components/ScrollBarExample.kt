@@ -63,7 +63,7 @@ object ScrollBarExample {
                         scrollbar1.incrementValues()
                     }
                 }
-        scrollbar1.onValueChanged {
+        scrollbar1.onValueChange {
             scrollFragment.scrollTo(it.newValue)
         }
         compositeScrollBarPanel.addComponent(decrementButton)

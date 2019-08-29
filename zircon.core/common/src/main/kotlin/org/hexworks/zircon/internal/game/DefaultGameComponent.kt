@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.impl.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.impl.Position3D
@@ -47,7 +48,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         return ComponentStyleSet.defaultStyleSet()
     }
 
-    override fun toFlattenedLayers(): Iterable<Layer> {
+    fun layers(): List<LayerState> {
         val height = gameArea.actualSize().zLength
         val fromZ = gameArea.visibleOffset().z
         val screenSize = gameArea.visibleSize().to2DSize()
@@ -63,7 +64,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
                     result.add(LayerBuilder.newBuilder()
                             .withTileGraphics(it)
                             // TODO: regression test this: position vs absolutePosition
-                            .withOffset(absolutePosition)
+                            .withOffset(relativePosition)
                             .build())
                 }
             }
@@ -111,11 +112,12 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
             builders.forEach {
                 result.add(LayerBuilder.newBuilder()
                         .withTileGraphics(it.build())
-                        .withOffset(absolutePosition)
+                        .withOffset(relativePosition)
                         .build())
             }
         }
-        return result
+        // TODO: fix
+        return result.map { it.state }
     }
 
     override fun render() {

@@ -54,7 +54,7 @@ data class GameComponentBuilder<T : Tile, B : Block<T>>(
                 gameArea = gameArea.get(),
                 projectionMode = projectionMode,
                 componentMetadata = ComponentMetadata(
-                        position = position,
+                        relativePosition = position,
                         size = size,
                         componentStyleSet = componentStyleSet,
                         tileset = tileset))

@@ -27,7 +27,7 @@ object ImageTileExample {
 
         // TODO: fix positioning
 
-        tileGrid.setTileAt(Positions.create(30, 20), imageTile)
+        tileGrid.draw(imageTile, Positions.create(30, 20))
 
     }
 

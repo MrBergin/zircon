@@ -4,16 +4,20 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.extensions.toCharacterTileString
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKED
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKING
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKED
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKING
 
 class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<DefaultCheckBox>) {
+    override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultCheckBox>) {
         val style = context.componentStyle.currentStyle()
-        tileGraphics.applyStyle(style)
-        val checkBoxState = context.component.state
+        val checkBoxState = context.component.checkBoxState
         val text = context.component.text
         val maxTextLength = tileGraphics.size.width - BUTTON_WIDTH - 1
         val clearedText = if (text.length > maxTextLength) {
@@ -22,10 +26,11 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
             text
         }
         val finalText = "${STATES.getValue(checkBoxState)} $clearedText"
-        tileGraphics.putText(finalText)
+        tileGraphics.draw(finalText.toCharacterTileString())
         (finalText.length until tileGraphics.width).forEach { idx ->
-            tileGraphics.setTileAt(Positions.create(idx, 0), Tiles.empty())
+            tileGraphics.draw(Tiles.empty(), Positions.create(idx, 0))
         }
+        tileGraphics.applyStyle(style)
     }
 
     companion object {

@@ -6,11 +6,12 @@ import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
 class HorizontalScrollBarRenderer : ComponentRenderer<ScrollBar> {
 
-    override fun render(tileGraphics: SubTileGraphics, context: ComponentRenderContext<ScrollBar>) {
+    override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<ScrollBar>) {
         val style = context.componentStyle.currentStyle()
         tileGraphics.applyStyle(style)
 
@@ -26,9 +27,9 @@ class HorizontalScrollBarRenderer : ComponentRenderer<ScrollBar> {
 
         (0..totalScrollBarWidth).forEach { idx ->
             when {
-                idx < lowBarPosition -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', disabledStyleSet))
-                idx > highBarPosition  -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', disabledStyleSet))
-                else -> tileGraphics.setTileAt(Positions.create(idx, 0), Tile.createCharacterTile(' ', invertedDefaultStyleSet))
+                idx < lowBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(idx, 0))
+                idx > highBarPosition  -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(idx, 0))
+                else -> tileGraphics.draw(Tile.createCharacterTile(' ', invertedDefaultStyleSet), Positions.create(idx, 0))
             }
         }
     }

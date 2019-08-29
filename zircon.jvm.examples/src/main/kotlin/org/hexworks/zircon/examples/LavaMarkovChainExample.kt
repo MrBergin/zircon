@@ -102,7 +102,7 @@ object LavaMarkovChainExample {
 
 
         tileGrid.size.fetchPositions().forEach {
-            tileGrid.setTileAt(it, defaultLava.withModifiers(Markov(MarkovChain.create(initialNode))))
+            tileGrid.draw(defaultLava.withModifiers(Markov(MarkovChain.create(initialNode))), it)
         }
 
 

@@ -97,15 +97,15 @@ class InMemoryGameAreaTest {
                 size = Size3D.from2DSize(Size.create(3, 2), 2))
 
         assertThat(result).hasSize(6)
-        val cells = result.map {
-            it.fetchCells()
+        val cells = result.map { graphics ->
+            graphics.tiles.map { Cell.create(it.key, it.value) }
         }
-        assertThat(cells[0]).containsExactlyElementsOf(EXPECTED_LAYER_0)
-        assertThat(cells[1]).containsExactlyElementsOf(EXPECTED_LAYER_1)
-        assertThat(cells[2]).containsExactlyElementsOf(EXPECTED_LAYER_2)
-        assertThat(cells[3]).containsExactlyElementsOf(EXPECTED_LAYER_3)
-        assertThat(cells[4]).containsExactlyElementsOf(EXPECTED_LAYER_4)
-        assertThat(cells[5]).containsExactlyElementsOf(EXPECTED_LAYER_5)
+        assertThat(cells[0]).isEqualTo(EXPECTED_LAYER_0)
+        assertThat(cells[1]).isEqualTo(EXPECTED_LAYER_1)
+        assertThat(cells[2]).isEqualTo(EXPECTED_LAYER_2)
+        assertThat(cells[3]).isEqualTo(EXPECTED_LAYER_3)
+        assertThat(cells[4]).isEqualTo(EXPECTED_LAYER_4)
+        assertThat(cells[5]).isEqualTo(EXPECTED_LAYER_5)
 
     }
 

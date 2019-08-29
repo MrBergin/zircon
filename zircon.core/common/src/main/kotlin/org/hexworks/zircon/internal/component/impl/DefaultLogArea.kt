@@ -137,7 +137,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             }
         }
         children.lastOrNull()?.let { lastChild ->
-            element.moveTo(lastChild.position.minus(contentPosition).withRelativeY(lastChild.height))
+            element.moveTo(lastChild.relativePosition.withRelativeY(lastChild.height))
         }
         addComponent(element)
         if (applyTheme) {
@@ -149,11 +149,11 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     private fun createTextBoxBuilder(): TextBoxBuilder {
         return TextBoxBuilder
                 .newBuilder(contentSize.width)
-                .withTileset(currentTileset())
+                .withTileset(tileset)
     }
 
     override fun render() {
-        LOGGER.debug("LogArea (id=${id.abbreviate()},visibility=$isVisible) was rendered.")
+        LOGGER.debug("LogArea (id=${id.abbreviate()},hidden=$isHidden) was rendered.")
         renderingStrategy.render(this, graphics)
     }
 

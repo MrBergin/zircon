@@ -27,7 +27,7 @@ class DefaultShape(private val positions: Set<Position> = setOf())
                 .withTileset(tileset)
                 .build()
         offsetPositions.forEach {
-            result.setTileAt(it, tile)
+            result.draw(tile, it)
         }
         return result
     }
