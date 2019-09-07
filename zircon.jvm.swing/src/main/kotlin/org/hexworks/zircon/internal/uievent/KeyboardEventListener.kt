@@ -4,7 +4,9 @@ import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyCode.INSERT
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.KeyboardEventType.*
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_RELEASED
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_TYPED
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -18,8 +20,6 @@ class KeyboardEventListener(private val tileGrid: InternalTileGrid) : KeyListene
 
     override fun keyPressed(e: KeyEvent) {
         val keyboardEvent = createKeyboardEvent(e, KEY_PRESSED)
-
-        // check for paste TODO: customizable?
 
         if (RuntimeConfig.config.isClipboardAvailable && keyboardEvent.isPasteEvent()) {
             pasteClipboardContent()

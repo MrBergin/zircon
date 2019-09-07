@@ -31,22 +31,22 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
                 .withForegroundColor(style.foregroundColor)
                 .asCharacterTile().get()
 
-        LineFactory.buildLine(topLeft, topRight).positions()
+        LineFactory.buildLine(topLeft, topRight).positions
                 .drop(1)
                 .dropLast(1).forEach {
                     tileGraphics.draw(topTile, it)
                 }
-        LineFactory.buildLine(topLeft, bottomLeft).positions()
+        LineFactory.buildLine(topLeft, bottomLeft).positions
                 .drop(1)
                 .dropLast(1).forEach {
                     tileGraphics.draw(topTile.withCharacter(Symbols.RIGHT_HALF_BLOCK), it)
                 }
-        LineFactory.buildLine(topRight, bottomRight).positions()
+        LineFactory.buildLine(topRight, bottomRight).positions
                 .drop(1)
                 .dropLast(1).forEach {
                     tileGraphics.draw(topTile.withCharacter(Symbols.LEFT_HALF_BLOCK), it)
                 }
-        LineFactory.buildLine(bottomLeft, bottomRight).positions()
+        LineFactory.buildLine(bottomLeft, bottomRight).positions
                 .drop(1)
                 .dropLast(1).forEach {
                     tileGraphics.draw(topTile.withCharacter(Symbols.UPPER_HALF_BLOCK), it)
@@ -82,13 +82,9 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
         val bottomRightTile = bottomLeftTile
                 .withModifiers(cropLeft)
 
-        tileGraphics.draw(
-                tileToDraw = topLeftTile, drawAt = topLeft)
-        tileGraphics.draw(
-                tileToDraw = topRightTile, drawAt = topRight)
-        tileGraphics.draw(
-                tileToDraw = bottomLeftTile, drawAt = bottomLeft)
-        tileGraphics.draw(
-                tileToDraw = bottomRightTile, drawAt = bottomRight)
+        tileGraphics.draw(topLeftTile, topLeft)
+        tileGraphics.draw(topRightTile, topRight)
+        tileGraphics.draw(bottomLeftTile, bottomLeft)
+        tileGraphics.draw(bottomRightTile, bottomRight)
     }
 }

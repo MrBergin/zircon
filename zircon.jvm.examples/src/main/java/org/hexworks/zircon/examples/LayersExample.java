@@ -1,12 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.Tiles;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder;
 import org.hexworks.zircon.api.color.TileColor;
 import org.hexworks.zircon.api.data.Position;
@@ -32,16 +26,16 @@ public class LayersExample {
 
         final String firstRow = "This is white title on black";
         for (int x = 0; x < firstRow.length(); x++) {
-            tileGrid.setTileAt(
-                    Positions.create(x + 1, 1),
-                    buildWhiteOnBlack(firstRow.charAt(x)));
+            tileGrid.draw(
+                    buildWhiteOnBlack(firstRow.charAt(x)),
+                    Positions.create(x + 1, 1));
         }
 
         final String secondRow = "Like the row above but with blue overlay.";
         for (int x = 0; x < secondRow.length(); x++) {
-            tileGrid.setTileAt(
-                    Positions.create(x + 1, 2),
-                    buildWhiteOnBlack(secondRow.charAt(x)));
+            tileGrid.draw(
+                    buildWhiteOnBlack(secondRow.charAt(x)),
+                    Positions.create(x + 1, 2));
         }
 
         addOverlayAt(tileGrid,

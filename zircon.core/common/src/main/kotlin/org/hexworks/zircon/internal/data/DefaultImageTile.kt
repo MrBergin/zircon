@@ -8,10 +8,9 @@ data class DefaultImageTile(
         override val tileset: TilesetResource)
     : BaseImageTile() {
 
-    private val cacheKey = "ImageTile(t=${tileset.path},n=$name)"
+    override val cacheKey: String
+        get() = "ImageTile(t=${tileset.path},n=$name)"
 
     override fun createCopy() = copy()
-
-    override fun generateCacheKey() = cacheKey
 
 }

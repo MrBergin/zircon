@@ -36,7 +36,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
                 decorationRenderers = listOf(),
                 componentRenderer = NoOpComponentRenderer())) {
 
-    private val visibleLevelCount = gameArea.visibleSize().zLength
+    private val visibleLevelCount = gameArea.visibleSize.zLength
 
     override fun acceptsFocus() = true
 
@@ -49,16 +49,16 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
     }
 
     fun layers(): List<LayerState> {
-        val height = gameArea.actualSize().zLength
-        val fromZ = gameArea.visibleOffset().z
-        val screenSize = gameArea.visibleSize().to2DSize()
+        val height = gameArea.actualSize.zLength
+        val fromZ = gameArea.visibleOffset.z
+        val screenSize = gameArea.visibleSize.to2DSize()
 
         val result = mutableListOf<Layer>()
 
         if (projectionMode == ProjectionMode.TOP_DOWN) {
             (fromZ until min(fromZ + visibleLevelCount, height)).forEach { levelIdx ->
                 val segment = gameArea.fetchLayersAt(
-                        offset = Position3D.from2DPosition(gameArea.visibleOffset().to2DPosition(), levelIdx),
+                        offset = Position3D.from2DPosition(gameArea.visibleOffset.to2DPosition(), levelIdx),
                         size = Size3D.from2DSize(size, 1))
                 segment.forEach {
                     result.add(LayerBuilder.newBuilder()
@@ -75,7 +75,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
             val builders = (0 until totalLayerCount * height).map {
                 TileGraphicsBuilder.newBuilder().withSize(screenSize)
             }
-            val (fromX, fromY) = gameArea.visibleOffset().to2DPosition()
+            val (fromX, fromY) = gameArea.visibleOffset.to2DPosition()
             val toX = fromX + size.width
             val toY = fromY + size.height
             (fromZ until min(fromZ + visibleLevelCount, height)).forEach { z ->

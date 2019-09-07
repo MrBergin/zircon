@@ -42,13 +42,12 @@ data class ModalBuilder<T : ModalResult>(
         this.darkenPercent = percentage
     }
 
-    // TODO: this is smelly
     override fun withSize(size: Size): ModalBuilder<T> {
         throw UnsupportedOperationException("Can't set the Size of a Modal by hand, use withParentSize instead.")
     }
 
     override fun build(): Modal<T> {
-        require(size.isUnknown().not()) {
+        require(size.isUnknown.not()) {
             "Can't build a modal without knowing the size of the parent."
         }
         require(contentComponent.isPresent) {

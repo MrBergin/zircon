@@ -85,8 +85,8 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
             batch.end()
             cursorRenderer.projectionMatrix = batch.projectionMatrix
             if (shouldDrawCursor()) {
-                grid.getTileAt(grid.cursorPosition()).map {
-                    drawCursor(cursorRenderer, it, grid.cursorPosition())
+                grid.getTileAt(grid.cursorPosition).map {
+                    drawCursor(cursorRenderer, it, grid.cursorPosition)
                 }
             }
         }
@@ -109,7 +109,7 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
             val actualPos = pos + state.position
             if (tile !== Tile.empty()) {
                 val actualTile =
-                        if (tile.isBlinking() /*&& blinkOn*/) {
+                        if (tile.isBlinking /*&& blinkOn*/) {
                             tile.withBackgroundColor(tile.foregroundColor)
                                     .withForegroundColor(tile.backgroundColor)
                         } else {
@@ -134,7 +134,7 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
             val actualPos = pos + state.position
             if (tile !== Tile.empty()) {
                 val actualTile =
-                        if (tile.isBlinking() /*&& blinkOn*/) {
+                        if (tile.isBlinking /*&& blinkOn*/) {
                             tile.withBackgroundColor(tile.foregroundColor)
                                     .withForegroundColor(tile.backgroundColor)
                         } else {
@@ -203,7 +203,7 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
     }
 
     private fun shouldDrawCursor(): Boolean {
-        return grid.isCursorVisible() &&
+        return grid.isCursorVisible &&
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 

@@ -128,7 +128,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             state.tiles.forEach { (tilePos, tile) ->
                 val finalPos = tilePos + state.position
                 tilesToRender.getOrPut(finalPos) { mutableListOf() }
-                if (tile.isOpaque()) {
+                if (tile.isOpaque) {
                     tilesToRender[finalPos] = mutableListOf(tile to state.tileset)
                 } else {
                     tilesToRender[finalPos]?.add(tile to state.tileset)
@@ -146,8 +146,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
 
 
         if (shouldDrawCursor()) {
-            tileGrid.getTileAt(tileGrid.cursorPosition()).map {
-                drawCursor(gc, it, tileGrid.cursorPosition())
+            tileGrid.getTileAt(tileGrid.cursorPosition).map {
+                drawCursor(gc, it, tileGrid.cursorPosition)
             }
         }
 
@@ -194,7 +194,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                            tile: Tile,
                            tileset: Tileset<Graphics2D>) {
         if (tile !== Tile.empty()) {
-            val actualTile = if (tile.isBlinking() && blinkOn) {
+            val actualTile = if (tile.isBlinking && blinkOn) {
                 tile.withBackgroundColor(tile.foregroundColor)
                         .withForegroundColor(tile.backgroundColor)
             } else {
@@ -218,7 +218,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                             tileset: Tileset<Graphics2D>) {
         state.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
-                val actualTile = if (tile.isBlinking() && blinkOn) {
+                val actualTile = if (tile.isBlinking && blinkOn) {
                     tile.withBackgroundColor(tile.foregroundColor)
                             .withForegroundColor(tile.backgroundColor)
                 } else {
@@ -259,7 +259,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     private fun shouldDrawCursor(): Boolean {
-        return tileGrid.isCursorVisible() &&
+        return tileGrid.isCursorVisible &&
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 

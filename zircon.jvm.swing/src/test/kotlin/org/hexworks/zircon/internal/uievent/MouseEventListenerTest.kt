@@ -21,7 +21,6 @@ class MouseEventListenerTest {
 
     @Before
     fun setUp() {
-        //TODO ;
         MockitoAnnotations.initMocks(this)
         target = MouseEventListener(FONT_SIZE, FONT_SIZE, tileGridMock)
     }

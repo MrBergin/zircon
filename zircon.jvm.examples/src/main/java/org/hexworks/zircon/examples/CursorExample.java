@@ -32,7 +32,7 @@ public class CursorExample {
         TileGrid grid = app.getTileGrid();
 
         // for this example we need the cursor to be visible
-        grid.setCursorVisibility(true);
+        grid.setCursorVisible(true);
 
         String text = "Cursor example...";
         for (int i = 0; i < text.length(); i++) {

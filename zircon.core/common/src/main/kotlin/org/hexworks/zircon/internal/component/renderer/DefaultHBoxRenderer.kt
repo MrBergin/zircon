@@ -10,8 +10,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultHBox
 class DefaultHBoxRenderer : ComponentRenderer<DefaultHBox> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultHBox>) {
-        val style = context.componentStyle.currentStyle()
         tileGraphics.fill(Tiles.defaultTile())
-        tileGraphics.applyStyle(style)
+        tileGraphics.applyStyle(context.currentStyle)
     }
 }

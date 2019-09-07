@@ -97,9 +97,10 @@ object LayerTransformerExample {
 
 object HideModifier : TileTransformModifier<CharacterTile> {
 
+    override val cacheKey = "Modifier.HideModifier"
+
     override fun canTransform(tile: Tile) = true
 
     override fun transform(tile: CharacterTile) = Tiles.empty()
 
-    override fun generateCacheKey() = "Modifier.HideModifier"
 }

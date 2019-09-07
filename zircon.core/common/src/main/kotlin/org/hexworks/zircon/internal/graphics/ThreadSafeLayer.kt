@@ -113,15 +113,15 @@ open class ThreadSafeLayer(
     }
 
     @Synchronized
-    final override fun draw(tilesToDraw: Map<Position, Tile>, drawAt: Position, drawArea: Size) {
-        backend.draw(tilesToDraw, drawAt, drawArea)
+    final override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        backend.draw(tileMap, drawPosition, drawArea)
         replaceState(currentState.copy(tiles = backend.tiles))
     }
 
 
     @Synchronized
-    final override fun draw(tileToDraw: Tile, drawAt: Position) {
-        backend.draw(tileToDraw, drawAt)
+    final override fun draw(tile: Tile, drawPosition: Position) {
+        backend.draw(tile, drawPosition)
         replaceState(currentState.copy(tiles = backend.tiles))
     }
 

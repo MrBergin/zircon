@@ -14,7 +14,7 @@ class ToggleButtonBuilderTest : ComponentBuilderTest<ToggleButton, ToggleButtonB
         target = ToggleButtonBuilder.newBuilder()
     }
 
-    @Test(expected = UnsupportedOperationException::class)
+    @Test
     override fun shouldProperlyApplyTitle() {
         target.withDecorations(box(title = TITLE_FOO))
     }

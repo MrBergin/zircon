@@ -132,75 +132,75 @@ interface DrawSurface : TileComposite, TilesetOverride {
      */
     fun draw(tileComposite: TileComposite) = draw(
             tileComposite = tileComposite,
-            drawAt = Position.zero(),
+            drawPosition = Position.zero(),
             drawArea = tileComposite.size)
 
     /**
      * Draws a [TileComposite] onto this [DrawSurface]. If the [tileComposite] has [Tile]s
      * which are not contained within the [size] of this [DrawSurface] they will be ignored.
-     * @param drawAt the starting position of the drawing relative to this [DrawSurface]'s top left corner.
+     * @param drawPosition the starting position of the drawing relative to this [DrawSurface]'s top left corner.
      *                 the default is [Positions.zero]
      */
     fun draw(tileComposite: TileComposite,
-             drawAt: Position) = draw(
+             drawPosition: Position) = draw(
             tileComposite = tileComposite,
-            drawAt = drawAt,
+            drawPosition = drawPosition,
             drawArea = tileComposite.size)
 
     /**
      * Draws a [TileComposite] onto this [DrawSurface]. If the [tileComposite] has [Tile]s
      * which are not contained within the [drawArea] of this [DrawSurface] they will be ignored.
-     * @param drawAt the starting position of the drawing relative to this [DrawSurface]'s top left corner.
+     * @param drawPosition the starting position of the drawing relative to this [DrawSurface]'s top left corner.
      *                 the default is [Positions.zero]
      * @param drawArea the sub-section of the [tileComposite] form which the [Tile]s should be drawn
      *             the default is the size of this [DrawSurface]
      */
     fun draw(tileComposite: TileComposite,
-             drawAt: Position,
+             drawPosition: Position,
              drawArea: Size) = draw(
-            tilesToDraw = tileComposite.tiles,
-            drawAt = drawAt,
+            tileMap = tileComposite.tiles,
+            drawPosition = drawPosition,
             drawArea = drawArea)
 
     /**
-     * Draws the given [tilesToDraw] onto this [DrawSurface]. If the [tilesToDraw] have [Tile]s
+     * Draws the given [tileMap] onto this [DrawSurface]. If the [tileMap] have [Tile]s
      * which are not contained within the [size] of this [DrawSurface] they will be ignored.
      */
-    fun draw(tilesToDraw: Map<Position, Tile>) = draw(
-            tilesToDraw = tilesToDraw,
-            drawAt = Position.zero(),
+    fun draw(tileMap: Map<Position, Tile>) = draw(
+            tileMap = tileMap,
+            drawPosition = Position.zero(),
             drawArea = this.size)
 
     /**
-     * Draws the given [tilesToDraw] onto this [DrawSurface]. If the [tilesToDraw] have [Tile]s
+     * Draws the given [tileMap] onto this [DrawSurface]. If the [tileMap] have [Tile]s
      * which are not contained within the [size] of this [DrawSurface] they will be ignored.
-     * @param drawAt the starting position of the drawing relative to this [DrawSurface]'s top left corner.
+     * @param drawPosition the starting position of the drawing relative to this [DrawSurface]'s top left corner.
      *                 the default is [Positions.zero]
      */
-    fun draw(tilesToDraw: Map<Position, Tile>,
-             drawAt: Position) = draw(
-            tilesToDraw = tilesToDraw,
-            drawAt = drawAt,
+    fun draw(tileMap: Map<Position, Tile>,
+             drawPosition: Position) = draw(
+            tileMap = tileMap,
+            drawPosition = drawPosition,
             drawArea = this.size)
 
     /**
-     * Draws the given [tilesToDraw] onto this [DrawSurface]. If the [tilesToDraw] have [Tile]s
+     * Draws the given [tileMap] onto this [DrawSurface]. If the [tileMap] have [Tile]s
      * which are not contained within the [size] of this [DrawSurface] they will be ignored.
-     * @param drawAt the starting position of the drawing relative to this [DrawSurface]'s top left corner.
+     * @param drawPosition the starting position of the drawing relative to this [DrawSurface]'s top left corner.
      *                 the default is [Positions.zero]
-     * @param drawArea the sub-section of the [tilesToDraw] form which the [Tile]s should be drawn
+     * @param drawArea the sub-section of the [tileMap] form which the [Tile]s should be drawn
      *             the default is the size of this [DrawSurface]
      */
-    fun draw(tilesToDraw: Map<Position, Tile>,
-             drawAt: Position,
+    fun draw(tileMap: Map<Position, Tile>,
+             drawPosition: Position,
              drawArea: Size)
 
     /**
-     * Draws the given [Tile] on this [DrawSurface] at the given [drawAt].
+     * Draws the given [Tile] on this [DrawSurface] at the given [drawPosition].
      * This function has no effect
      */
-    fun draw(tileToDraw: Tile,
-             drawAt: Position)
+    fun draw(tile: Tile,
+             drawPosition: Position)
 
     /**
      * Transforms the [Tile] at the given [position]. Has no effect

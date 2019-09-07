@@ -9,8 +9,7 @@ import org.hexworks.zircon.internal.component.impl.RootContainer
 class RootContainerRenderer : ComponentRenderer<RootContainer> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<RootContainer>) {
-        val style = context.componentStyle.currentStyle()
         tileGraphics.fill(Tiles.defaultTile())
-        tileGraphics.applyStyle(style)
+        tileGraphics.applyStyle(context.currentStyle)
     }
 }

@@ -23,7 +23,7 @@ data class DefaultCharacterTileString(override val characterTiles: List<Characte
         val (cols, rows) = size
         val charIter = characterTiles.iterator()
         val cursorHandler = DefaultCursorHandler(size)
-        if(characterTiles.isEmpty()) return tiles.toMap()
+        if (characterTiles.isEmpty()) return tiles.toMap()
 
         if (textWrap == TextWrap.WORD_WRAP) {
             val wordCharacterIterator = CharacterTileIterator(charIter)
@@ -32,12 +32,12 @@ data class DefaultCharacterTileString(override val characterTiles: List<Characte
                 do {
                     val nextWord = wordCharacterIterator.next()
                     val wordSize = nextWord.size
-                    var spaceRemaining = cols - cursorHandler.cursorPosition().x
+                    var spaceRemaining = cols - cursorHandler.cursorPosition.x
 
                     //the word is bigger then 1 line when this happens we should character wrap
                     if (wordSize > cols) {
                         nextWord.forEach { tc ->
-                            tiles[cursorHandler.cursorPosition()] = tc
+                            tiles[cursorHandler.cursorPosition] = tc
                             cursorHandler.moveCursorForward()
                         }
                     }
@@ -45,26 +45,26 @@ data class DefaultCharacterTileString(override val characterTiles: List<Characte
                     //this means we can plunk the word on our line
                     if (spaceRemaining >= wordSize) {
                         nextWord.forEach { tc ->
-                            tiles[cursorHandler.cursorPosition()] = tc
+                            tiles[cursorHandler.cursorPosition] = tc
                             cursorHandler.moveCursorForward()
                         }
                     } else {
                         //this means we are at the last yLength and therefore we cannot wrap anymore. Therefore we should
                         //stop rendering
-                        val row = cursorHandler.cursorPosition().y
+                        val row = cursorHandler.cursorPosition.y
                         if (row == rows - 1) {
                             return tiles.toMap()
                         }
 
                         //as our word couldn't fit on the last line lets move down a yLength
-                        cursorHandler.putCursorAt(cursorHandler.cursorPosition().withRelativeY(1).withX(0))
+                        cursorHandler.cursorPosition = cursorHandler.cursorPosition.withRelativeY(1).withX(0)
                         //recalculate our space remaining
-                        spaceRemaining = cols - cursorHandler.cursorPosition().x
+                        spaceRemaining = cols - cursorHandler.cursorPosition.x
 
                         if (spaceRemaining >= wordSize) {
                             //this means we can plunk the word on our line
                             nextWord.forEach { tc ->
-                                tiles[cursorHandler.cursorPosition()] = tc
+                                tiles[cursorHandler.cursorPosition] = tc
                                 cursorHandler.moveCursorForward()
                             }
                         }
@@ -76,18 +76,18 @@ data class DefaultCharacterTileString(override val characterTiles: List<Characte
             return tiles.toMap()
         }
 
-        tiles[cursorHandler.cursorPosition()] = charIter.next()
+        tiles[cursorHandler.cursorPosition] = charIter.next()
 
         if (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext()) {
             do {
                 cursorHandler.moveCursorForward()
-                tiles[cursorHandler.cursorPosition()] = charIter.next()
-            } while (cursorHandler.isCursorAtTheEndOfTheLine().not() && charIter.hasNext())
+                tiles[cursorHandler.cursorPosition] = charIter.next()
+            } while (cursorHandler.isCursorAtTheEndOfTheLine.not() && charIter.hasNext())
 
-            if (textWrap == TextWrap.WRAP && charIter.hasNext() && cursorHandler.isCursorAtTheLastRow().not()) {
+            if (textWrap == TextWrap.WRAP && charIter.hasNext() && cursorHandler.isCursorAtTheLastRow.not()) {
                 do {
                     cursorHandler.moveCursorForward()
-                    tiles[cursorHandler.cursorPosition()] = charIter.next()
+                    tiles[cursorHandler.cursorPosition] = charIter.next()
                 } while (cursorIsNotAtBottomRightCorner(cursorHandler) && charIter.hasNext())
             }
         }
@@ -104,5 +104,5 @@ data class DefaultCharacterTileString(override val characterTiles: List<Characte
     }
 
     private fun cursorIsNotAtBottomRightCorner(cursorHandler: DefaultCursorHandler) =
-            (cursorHandler.isCursorAtTheLastRow() && cursorHandler.isCursorAtTheEndOfTheLine()).not()
+            (cursorHandler.isCursorAtTheLastRow && cursorHandler.isCursorAtTheEndOfTheLine).not()
 }

@@ -10,10 +10,10 @@ import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
+@Suppress("DuplicatedCode")
 class HorizontalSliderRenderer : ComponentRenderer<Slider> {
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<Slider>) {
-        val style = context.componentStyle.currentStyle()
-        tileGraphics.applyStyle(style)
+        tileGraphics.applyStyle(context.currentStyle)
 
         val defaultStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DEFAULT)
         val invertedDefaultStyleSet = defaultStyleSet
@@ -26,7 +26,7 @@ class HorizontalSliderRenderer : ComponentRenderer<Slider> {
 
         (0..barWidth).forEach { idx ->
             when {
-                idx == cursorPosition -> tileGraphics.draw(Tile.createCharacterTile(Symbols.DOUBLE_LINE_VERTICAL, style), Positions.create(idx, 0))
+                idx == cursorPosition -> tileGraphics.draw(Tile.createCharacterTile(Symbols.DOUBLE_LINE_VERTICAL, context.currentStyle), Positions.create(idx, 0))
                 idx < cursorPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', invertedDefaultStyleSet), Positions.create(idx, 0))
                 else -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(idx, 0))
             }

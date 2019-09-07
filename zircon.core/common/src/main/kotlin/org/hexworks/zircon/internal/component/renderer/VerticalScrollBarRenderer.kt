@@ -7,14 +7,11 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 
+@Suppress("DuplicatedCode")
 class VerticalScrollBarRenderer : ComponentRenderer<ScrollBar> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<ScrollBar>) {
-        val style = context.componentStyle.currentStyle()
-        tileGraphics.applyStyle(style)
-
         val defaultStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DEFAULT)
         val invertedDefaultStyleSet = defaultStyleSet
                 .withBackgroundColor(defaultStyleSet.foregroundColor)
@@ -25,10 +22,12 @@ class VerticalScrollBarRenderer : ComponentRenderer<ScrollBar> {
         val highBarPosition = lowBarPosition + context.component.barSizeInSteps - 1
         val totalScrollBarHeight = context.component.contentSize.height
 
+        tileGraphics.applyStyle(context.currentStyle)
+
         (0..totalScrollBarHeight).forEach { idx ->
             when {
                 idx < lowBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(0, idx))
-                idx > highBarPosition  -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(0, idx))
+                idx > highBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Positions.create(0, idx))
                 else -> tileGraphics.draw(Tile.createCharacterTile(' ', invertedDefaultStyleSet), Positions.create(0, idx))
             }
         }

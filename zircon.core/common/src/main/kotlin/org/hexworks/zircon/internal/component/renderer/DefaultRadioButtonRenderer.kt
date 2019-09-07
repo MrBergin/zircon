@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -16,8 +15,6 @@ import kotlin.math.max
 class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultRadioButton>) {
-        val style = context.componentStyle.currentStyle()
-        tileGraphics.applyStyle(style)
         val checkBoxState = context.component.radioButtonState
         val text = context.component.text
         val maxTextLength = max(0, tileGraphics.size.width - BUTTON_WIDTH - 1)
@@ -26,15 +23,16 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
         } else {
             text
         }
-        val finalText = "${STATES[checkBoxState]!!} $clearedText"
+        val finalText = "${STATES[checkBoxState] ?: error("")} $clearedText"
         tileGraphics.draw(CharacterTileStrings
                 .newBuilder()
                 .withText(finalText)
-                .withSize(Sizes.create(finalText.length, 1))
+                .withSize(tileGraphics.size)
                 .build())
         (finalText.length until tileGraphics.width).forEach { idx ->
             tileGraphics.draw(Tiles.empty(), Positions.create(idx, 0))
         }
+        tileGraphics.applyStyle(context.currentStyle)
     }
 
     companion object {

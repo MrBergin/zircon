@@ -40,12 +40,12 @@ data class REXLayer(private val width: Int,
                     continue
                 }
                 layer.draw(
-                        tileToDraw = TileBuilder.newBuilder()
+                        tile = TileBuilder.newBuilder()
                                 .withCharacter(cell.getCharacter())
                                 .withBackgroundColor(cell.getBackgroundColor())
                                 .withForegroundColor(cell.getForegroundColor())
                                 .build(),
-                        drawAt = Position.create(x, y))
+                        drawPosition = Position.create(x, y))
             }
         }
         return layer

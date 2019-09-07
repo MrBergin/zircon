@@ -64,11 +64,6 @@ class ThreadSafeLayerableTest {
                 .isEmpty()
     }
 
-    @Test
-    fun shouldContainBottomLayerOnlyWhenTwoLayersAreAddedAndTopDoesNotIntersectCoordinate() {
-        // TODO: what?
-    }
-
     companion object {
         val TILESET = CP437TilesetResources.wanderlust16x16()
         val SIZE = Sizes.create(80, 24)

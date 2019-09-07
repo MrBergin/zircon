@@ -32,7 +32,7 @@ public class RexLoaderExample {
                 .build());
 
         final Screen screen = Screens.createScreenFor(tileGrid);
-        screen.setCursorVisibility(false);
+        screen.setCursorVisible(false);
         List<Layer> layers = rex.toLayerList(TILESET);
         for (Layer layer : layers) {
             screen.addLayer(layer);

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.builder.Builder
@@ -55,6 +56,14 @@ data class LayerBuilder(
      */
     fun withOffset(offset: Position) = also {
         this.offset = offset
+    }
+
+    /**
+     * Sets the `offset` for the new [org.hexworks.zircon.api.graphics.Layer].
+     * Default is 0x0.
+     */
+    fun withOffset(x: Int, y: Int) = also {
+        this.offset = Positions.create(x, y)
     }
 
     /**

@@ -132,7 +132,6 @@ abstract class BaseTileImage : TileImage {
     }
 
     override fun toSubImage(offset: Position, size: Size): TileImage {
-        // TODO: wtf?
         var newTiles = PersistentMapFactory.create<Position, Tile>()
         size.fetchPositions()
                 .map { it + offset }

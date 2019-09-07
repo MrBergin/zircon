@@ -90,7 +90,7 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
         if (size.width > 2) {
             val horizontalLine = LineFactory.buildLine(topLeftPos, topRightPos.withRelativeX(-2))
             if (drawTop.or(drawBottom)) {
-                horizontalLine.positions().forEach {
+                horizontalLine.positions.forEach {
                     if (drawTop) {
                         val topOffset = it.withRelativeX(1)
                         tileGraphics.getTileAt(topOffset).map { char ->
@@ -118,7 +118,7 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
         if (size.height > 2) {
             val verticalLine = LineFactory.buildLine(topLeftPos, bottomLeftPos.withRelativeY(-2))
             if (drawLeft.or(drawRight)) {
-                verticalLine.positions().forEach {
+                verticalLine.positions.forEach {
                     if (drawLeft) {
                         val leftOffset = it.withRelativeY(1)
                         tileGraphics.getTileAt(leftOffset).map { char ->

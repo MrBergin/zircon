@@ -34,7 +34,6 @@ data class TextBoxBuilder(
         contentSize = Sizes.unknown().withWidth(initialContentWidth)
     }
 
-    // TODO: fishy
     override fun withSize(size: Size): TextBoxBuilder {
         throw UnsupportedOperationException("You can't set a size for a TextBox by hand. Try setting width instead.")
     }

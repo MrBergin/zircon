@@ -21,36 +21,36 @@ import org.hexworks.zircon.internal.resource.TileType
 interface Tile : Cacheable, StyleSet {
 
     val tileType: TileType
+
     val styleSet: StyleSet
 
-    // TODO: use vals for these
-    fun isOpaque(): Boolean
+    val isOpaque: Boolean
 
-    fun isUnderlined(): Boolean
+    val isUnderlined: Boolean
 
-    fun isCrossedOut(): Boolean
+    val isCrossedOut: Boolean
 
-    fun isBlinking(): Boolean
+    val isBlinking: Boolean
 
-    fun isVerticalFlipped(): Boolean
+    val isVerticalFlipped: Boolean
 
-    fun isHorizontalFlipped(): Boolean
+    val isHorizontalFlipped: Boolean
 
-    fun hasBorder(): Boolean
-
-    fun fetchBorderData(): Set<Border>
+    val hasBorder: Boolean
 
     /**
      * Tells whether this [Tile] **is** an empty [Tile]
      * (it is the [Tile.empty] instance).
      */
-    fun isEmpty(): Boolean
+    val isEmpty: Boolean
 
     /**
      * Tells whether this [Tile] **is not** an empty [Tile]
      * (it is not the [Tile.empty] instance).
      */
-    fun isNotEmpty(): Boolean
+    val isNotEmpty: Boolean
+
+    fun fetchBorderData(): Set<Border>
 
     override fun createCopy(): Tile
 

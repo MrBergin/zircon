@@ -33,7 +33,7 @@ data class CharacterTileStringBuilder(
 
     fun withText(text: String) = also {
         this.text = text
-        if (size.isUnknown()) {
+        if (size.isUnknown) {
             size = Sizes.create(text.length, 1)
         }
     }

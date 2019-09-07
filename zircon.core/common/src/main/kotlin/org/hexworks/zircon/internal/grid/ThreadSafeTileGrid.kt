@@ -35,7 +35,7 @@ class ThreadSafeTileGrid(
         override var layerable: InternalLayerable = ThreadSafeLayerable(initialSize),
         override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
         private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
-                cursorSpace = initialSize),
+                initialCursorSpace = initialSize),
         private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault())
     : InternalTileGrid,
         InternalCursorHandler by cursorHandler,
@@ -89,7 +89,7 @@ class ThreadSafeTileGrid(
         if (tile is CharacterTile && tile.character == '\n') {
             moveCursorToNextLine()
         } else {
-            backend.draw(tile, cursorPosition())
+            backend.draw(tile, cursorPosition)
             moveCursorForward()
         }
     }
@@ -147,18 +147,18 @@ class ThreadSafeTileGrid(
     }
 
     @Synchronized
-    override fun draw(tileComposite: TileComposite, drawAt: Position, drawArea: Size) {
-        backend.draw(tileComposite, drawAt, drawArea)
+    override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
+        backend.draw(tileComposite, drawPosition, drawArea)
     }
 
     @Synchronized
-    override fun draw(tilesToDraw: Map<Position, Tile>, drawAt: Position, drawArea: Size) {
-        backend.draw(tilesToDraw, drawAt, drawArea)
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        backend.draw(tileMap, drawPosition, drawArea)
     }
 
     @Synchronized
-    override fun draw(tileToDraw: Tile, drawAt: Position) {
-        backend.draw(tileToDraw, drawAt)
+    override fun draw(tile: Tile, drawPosition: Position) {
+        backend.draw(tile, drawPosition)
     }
 
     @Synchronized
@@ -225,7 +225,7 @@ class ThreadSafeTileGrid(
     }
 
     private fun moveCursorToNextLine() {
-        putCursorAt(cursorPosition().withRelativeY(1).withX(0))
+        cursorPosition = cursorPosition.withRelativeY(1).withX(0)
     }
 
     private fun initializeLayerable(initialSize: Size, initialTileset: TilesetResource) {

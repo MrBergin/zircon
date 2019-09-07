@@ -1,12 +1,6 @@
 package org.hexworks.zircon.examples;
 
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Layers;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.UIEventResponses;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
@@ -62,7 +56,7 @@ public class FontSwitcherExample {
     }
 
     private static void refreshText(TileGrid tileGrid, Position position) {
-        tileGrid.putCursorAt(position);
+        tileGrid.setCursorPosition(position);
         for (int i = 0; i < "Press '->' to switch Tileset!".length(); i++) {
 //            tileGrid.putCharacter("Press '->' to switch Tileset!".charAt(i));
         }

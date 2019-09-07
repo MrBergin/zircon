@@ -13,7 +13,5 @@ enum class GameModifiers : Modifier {
     BLOCK_BOTTOM,
     BLOCK_LAYER;
 
-    override fun generateCacheKey(): String {
-        return "Modifier.GameModifier.$name"
-    }
+    override val cacheKey = "Modifier.GameModifier.$name"
 }

@@ -28,7 +28,6 @@ open class MouseEventListener(
                 MouseInfo.getNumberOfButtons() > 2 &&
                 e.button == MouseEvent.BUTTON2 &&
                 RuntimeConfig.config.isClipboardAvailable) {
-            // TODO: customizable?
             pasteSelectionContent()
         }
         processMouseEvent(MouseEventType.MOUSE_CLICKED, e)

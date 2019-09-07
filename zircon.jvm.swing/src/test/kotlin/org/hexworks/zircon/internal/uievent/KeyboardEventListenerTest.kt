@@ -18,7 +18,6 @@ class KeyboardEventListenerTest {
 
     @Before
     fun setUp() {
-        //TODO ;
         MockitoAnnotations.initMocks(this)
         target = KeyboardEventListener(tileGridMock)
     }

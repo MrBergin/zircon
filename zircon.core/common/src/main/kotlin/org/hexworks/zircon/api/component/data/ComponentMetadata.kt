@@ -15,7 +15,7 @@ data class ComponentMetadata(val relativePosition: Position,
                              val componentStyleSet: ComponentStyleSet) {
 
     init {
-        require(relativePosition.hasNegativeComponent().not()) {
+        require(relativePosition.hasNegativeComponent.not()) {
             "Can't have a Component with a relative position ($relativePosition) which has a " +
                     "negative dimension."
         }

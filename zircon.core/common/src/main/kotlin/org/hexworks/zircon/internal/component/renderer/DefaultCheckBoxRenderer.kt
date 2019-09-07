@@ -1,12 +1,8 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Tiles
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.extensions.toCharacterTileString
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKED
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKING
@@ -16,7 +12,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultCheckBox>) {
-        val style = context.componentStyle.currentStyle()
         val checkBoxState = context.component.checkBoxState
         val text = context.component.text
         val maxTextLength = tileGraphics.size.width - BUTTON_WIDTH - 1
@@ -26,11 +21,7 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
             text
         }
         val finalText = "${STATES.getValue(checkBoxState)} $clearedText"
-        tileGraphics.draw(finalText.toCharacterTileString())
-        (finalText.length until tileGraphics.width).forEach { idx ->
-            tileGraphics.draw(Tiles.empty(), Positions.create(idx, 0))
-        }
-        tileGraphics.applyStyle(style)
+        tileGraphics.fillWithText(finalText, context.currentStyle)
     }
 
     companion object {

@@ -19,11 +19,11 @@ import org.hexworks.zircon.internal.util.PersistentMap
 import org.hexworks.zircon.platform.factory.PersistentListFactory
 import org.hexworks.zircon.platform.factory.PersistentMapFactory
 
-abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
-                                                    actualSize: Size3D)
+abstract class BaseGameArea<T : Tile, B : Block<T>>(initialVisibleSize: Size3D,
+                                                    initialActualSize: Size3D)
     : GameArea<T, B>, Scrollable3D by DefaultScrollable3D(
-        visibleSize = visibleSize,
-        actualSize = actualSize) {
+        initialVisibleSize = initialVisibleSize,
+        initialActualSize = initialActualSize) {
 
     private var overlays: PersistentMap<Int, PersistentList<Layer>> = PersistentMapFactory.create()
 
@@ -31,7 +31,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
         return if (fetchMode == GameArea.BlockFetchMode.IGNORE_EMPTY) {
             fetchBlocks()
         } else {
-            actualSize().fetchPositions().map { createCell(it) }
+            actualSize.fetchPositions().map { createCell(it) }
         }
     }
 
@@ -72,7 +72,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(visibleSize: Size3D,
         } else {
             fetchPositionsWithOffset(
                     offset = Position3D.defaultPosition(),
-                    size = Size3D.create(actualSize().xLength, actualSize().yLength, z))
+                    size = Size3D.create(actualSize.xLength, actualSize.yLength, z))
                     .map { createCell(it) }
         }
     }

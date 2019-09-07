@@ -104,7 +104,7 @@ object DrawingExample {
                         val pos = mouseAction.position - offset
                         if (pos != pressedAt) {
                             tempLayer.clear()
-                            LineFactory.buildLine(pressedAt, pos).positions().forEach {
+                            LineFactory.buildLine(pressedAt, pos).positions.forEach {
                                 tempLayer.draw(TEST_TILE, it)
                             }
                             layer.draw(tempLayer)
@@ -118,7 +118,7 @@ object DrawingExample {
                         val pos = mouseAction.position - offset
                         if (pos != pressedAt) {
                             tempLayer.clear()
-                            LineFactory.buildLine(pressedAt, pos).positions().forEach {
+                            LineFactory.buildLine(pressedAt, pos).positions.forEach {
                                 tempLayer.draw(TEST_TILE, it)
                             }
                         }
@@ -152,7 +152,7 @@ object DrawingExample {
         private var chosenLayer = 0 to overlays.getValue(0)
 
         init {
-            gameArea.actualSize().to2DSize().fetchPositions().forEach {
+            gameArea.actualSize.to2DSize().fetchPositions().forEach {
                 gameArea.setBlockAt(Positions.from2DTo3D(it), BLACK_BLOCK)
             }
             gameArea.pushOverlayAt(chosenLayer.second, chosenLayer.first)

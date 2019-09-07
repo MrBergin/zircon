@@ -45,18 +45,18 @@ class ThreadSafeTileGraphics(
             tiles = initialTiles)
 
     @Synchronized
-    override fun draw(tilesToDraw: Map<Position, Tile>, drawAt: Position, drawArea: Size) {
-        tiles = tiles.putAll(tilesToDraw.asSequence()
-                .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawAt) }
-                .map { it.key + drawAt to it.value }
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        tiles = tiles.putAll(tileMap.asSequence()
+                .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
+                .map { it.key + drawPosition to it.value }
                 .toMap())
         currentState = currentState.copy(tiles = tiles)
     }
 
     @Synchronized
-    override fun draw(tileToDraw: Tile, drawAt: Position) {
-        if (size.containsPosition(drawAt)) {
-            tiles = tiles.put(drawAt, tileToDraw)
+    override fun draw(tile: Tile, drawPosition: Position) {
+        if (size.containsPosition(drawPosition)) {
+            tiles = tiles.put(drawPosition, tile)
             currentState = currentState.copy(tiles = tiles)
         }
     }

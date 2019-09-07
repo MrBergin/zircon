@@ -59,21 +59,16 @@ class SubTileGraphics(
 
     override fun setTileAt(position: Position, tile: Tile) = draw(tile, position)
 
-    override fun draw(tileComposite: TileComposite, drawAt: Position, drawArea: Size) {
-        draw(tilesToDraw = tileComposite.tiles,
-                drawAt = drawAt,
-                drawArea = drawArea)
+    override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
+        draw(tileComposite.tiles, drawPosition, drawArea)
     }
 
-    override fun draw(tilesToDraw: Map<Position, Tile>, drawAt: Position, drawArea: Size) {
-        backend.draw( // TODO: test this
-                tilesToDraw = tilesToDraw,
-                drawAt = drawAt + offset,
-                drawArea = drawArea)
+    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        backend.draw(tileMap, drawPosition + offset, drawArea)
     }
 
-    override fun draw(tileToDraw: Tile, drawAt: Position) {
-        backend.draw(tileToDraw = tileToDraw, drawAt = drawAt + offset)
+    override fun draw(tile: Tile, drawPosition: Position) {
+        backend.draw(tile, drawPosition + offset)
     }
 
     override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
@@ -113,7 +108,6 @@ class SubTileGraphics(
                     position = offset + rect.position,
                     size = size.min(rect.size)))
 
-    // TODO: optimize this
     @Synchronized
     override fun clear() {
         size.fetchPositions().forEach {

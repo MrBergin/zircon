@@ -24,7 +24,6 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     private var currentInlineBuilder = createTextBoxBuilder()
     private var currentTheme: ColorTheme = ColorThemeBuilder.newBuilder().build()
 
-    // TODO: fix decoration problem
     init {
         render()
     }

@@ -64,7 +64,7 @@ public class StatsPanelExample {
                 .build());
 
         screen.addComponent(panel);
-        screen.applyColorTheme(ColorThemes.tron());
+        screen.applyColorTheme(ColorThemes.zenburnVanilla());
         screen.display();
 
     }

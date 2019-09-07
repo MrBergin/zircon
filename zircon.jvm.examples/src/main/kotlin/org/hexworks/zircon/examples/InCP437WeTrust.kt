@@ -39,11 +39,11 @@ object InCP437WeTrust {
                 .withRendererFunction { tileGraphics, _ ->
                     loader.fetchMetadata().forEach { (char, meta) ->
                         tileGraphics.draw(
-                                tileToDraw = Tiles.defaultTile()
+                                tile = Tiles.defaultTile()
                                         .withCharacter(char)
                                         .withBackgroundColor(theme.primaryBackgroundColor)
                                         .withForegroundColor(ANSITileColor.values()[Random().nextInt(ANSITileColor.values().size)]),
-                                drawAt = Positions.create(meta.x, meta.y)
+                                drawPosition = Positions.create(meta.x, meta.y)
                                         .plus(Positions.offset1x1()))
                     }
                 }.build()

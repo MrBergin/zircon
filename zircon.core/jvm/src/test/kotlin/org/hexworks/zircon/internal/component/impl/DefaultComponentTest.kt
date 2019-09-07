@@ -194,21 +194,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
-    fun shouldNotListenToMousePressOnOtherComponents() {
-        // TODO: move this test to component container!
-    }
-
-    @Test
-    fun shouldProperlyListenToMouseRelease() {
-        // TODO: move this test to component container!
-    }
-
-    @Test
-    fun shouldNotListenToMouseReleaseOnOtherComponents() {
-        // TODO: move this test to component container!
-    }
-
-    @Test
     fun shouldBeEqualToItself() {
         assertThat(target).isEqualTo(target)
     }

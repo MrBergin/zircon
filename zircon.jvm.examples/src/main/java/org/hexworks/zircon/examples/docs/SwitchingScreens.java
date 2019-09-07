@@ -21,14 +21,14 @@ public class SwitchingScreens {
         final Button next = Components.button()
                 .withText("Next")
                 // TODO: if the components are over each other the event seems to fire twice!
-                .withPosition(Positions.offset1x1().withRelativeX(7))
+                .withPosition(8, 1)
                 .build();
         screen0.addComponent(next);
 
         final Screen screen1 = Screens.createScreenFor(tileGrid);
         final Button prev = Components.button()
                 .withText("Prev")
-                .withPosition(Positions.offset1x1())
+                .withPosition(1, 1)
                 .build();
         screen1.addComponent(prev);
 

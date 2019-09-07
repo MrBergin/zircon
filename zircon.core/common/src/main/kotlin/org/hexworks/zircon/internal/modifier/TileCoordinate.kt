@@ -5,7 +5,5 @@ import org.hexworks.zircon.api.modifier.TextureTransformModifier
 
 data class TileCoordinate(val position: Position) : TextureTransformModifier {
 
-    private val key = "Internal.Modifier.TileCoordinate(x=${position.x},y=${position.y})"
-
-    override fun generateCacheKey() = key
+    override val cacheKey = "Internal.Modifier.TileCoordinate(x=${position.x},y=${position.y})"
 }

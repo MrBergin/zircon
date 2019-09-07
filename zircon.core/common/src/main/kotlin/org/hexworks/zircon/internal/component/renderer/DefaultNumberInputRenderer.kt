@@ -10,8 +10,8 @@ import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
 class DefaultNumberInputRenderer : ComponentRenderer<DefaultHorizontalNumberInput> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultHorizontalNumberInput>) {
-        val style = context.componentStyle.currentStyle()
         val component = context.component
+        val style = context.currentStyle
         tileGraphics.applyStyle(style)
         val tileTemplate = Tile.createCharacterTile(' ', style)
         tileGraphics.size.fetchPositions().forEach { pos ->

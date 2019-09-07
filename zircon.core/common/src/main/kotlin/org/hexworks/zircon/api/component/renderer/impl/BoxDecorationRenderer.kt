@@ -42,20 +42,20 @@ data class BoxDecorationRenderer(
                         .withCharacter(boxType.connectorLeft)
                         .build(), Position.create(1, 0))
                 val pos = Position.create(2, 0)
-                (0 until cleanText.length).forEach { idx ->
+                (cleanText.indices).forEach { idx ->
                     tileGraphics.draw(
-                            tileToDraw = TileBuilder.newBuilder()
+                            tile = TileBuilder.newBuilder()
                                     .withStyleSet(style)
                                     .withCharacter(cleanText[idx])
                                     .build(),
-                            drawAt = pos.withRelativeX(idx))
+                            drawPosition = pos.withRelativeX(idx))
                 }
                 tileGraphics.draw(
-                        tileToDraw = TileBuilder.newBuilder()
+                        tile = TileBuilder.newBuilder()
                                 .withStyleSet(style)
                                 .withCharacter(boxType.connectorRight)
                                 .build(),
-                        drawAt = Position.create(2 + cleanText.length, 0))
+                        drawPosition = Position.create(2 + cleanText.length, 0))
             }
         }
     }

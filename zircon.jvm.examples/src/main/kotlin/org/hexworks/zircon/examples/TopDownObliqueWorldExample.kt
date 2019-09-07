@@ -190,7 +190,7 @@ object TopDownObliqueWorldExample {
 
         val gc = GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
                 .withGameArea(ga)
-                .withVisibleSize(ga.visibleSize())
+                .withVisibleSize(ga.visibleSize)
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE)
                 .build()
 
@@ -263,20 +263,20 @@ object TopDownObliqueWorldExample {
         val topRight = topLeft.withRelativeX(size.width - 1)
 
         val houseHeight = 4
-        Shapes.buildFilledRectangle(topLeft, size).positions().forEach {
+        Shapes.buildFilledRectangle(topLeft, size).positions.forEach {
             ga.setBlockAt(Positions.from2DTo3D(it, 0), FLOOR_BLOCK)
         }
         repeat(houseHeight) { lvl ->
-            Shapes.buildLine(bottomLeft, bottomRight).positions().forEach { pos ->
+            Shapes.buildLine(bottomLeft, bottomRight).positions.forEach { pos ->
                 ga.setBlockAt(Positions.from2DTo3D(pos, lvl), wallFront())
             }
-            Shapes.buildLine(topLeft, topRight).positions().forEach { pos ->
+            Shapes.buildLine(topLeft, topRight).positions.forEach { pos ->
                 ga.setBlockAt(Positions.from2DTo3D(pos, lvl), wallBack())
             }
-            Shapes.buildLine(topLeft.withRelativeY(1), bottomLeft.withRelativeY(-1)).positions().forEach { pos ->
+            Shapes.buildLine(topLeft.withRelativeY(1), bottomLeft.withRelativeY(-1)).positions.forEach { pos ->
                 ga.setBlockAt(Positions.from2DTo3D(pos, lvl), wallBack())
             }
-            Shapes.buildLine(topRight.withRelativeY(1), bottomRight.withRelativeY(-1)).positions().forEach { pos ->
+            Shapes.buildLine(topRight.withRelativeY(1), bottomRight.withRelativeY(-1)).positions.forEach { pos ->
                 ga.setBlockAt(Positions.from2DTo3D(pos, lvl), wallBack())
             }
         }
@@ -303,7 +303,7 @@ object TopDownObliqueWorldExample {
         val roofOffset = topLeft.withRelativeX(-1).withRelativeY(-1)
         val roofSize = size.withRelativeHeight(2).withRelativeWidth(2)
         repeat(Math.min(size.width, size.height) / 2 + 1) { idx ->
-            Shapes.buildRectangle(roofOffset, roofSize.minus(Sizes.create(idx * 2, idx * 2))).positions().forEach {
+            Shapes.buildRectangle(roofOffset, roofSize.minus(Sizes.create(idx * 2, idx * 2))).positions.forEach {
                 ga.setBlockAt(it.plus(roofOffset)
                         .withRelativeX(idx)
                         .withRelativeY(idx)
@@ -313,7 +313,7 @@ object TopDownObliqueWorldExample {
     }
 
     private fun addGrass(ga: GameArea<Tile, Block<Tile>>) {
-        ga.actualSize().to2DSize().fetchPositions().forEach { pos ->
+        ga.actualSize.to2DSize().fetchPositions().forEach { pos ->
             ga.setBlockAt(Positions.from2DTo3D(pos, 0), grass())
         }
     }

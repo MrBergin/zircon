@@ -6,10 +6,8 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.Cell
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toCharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap.NO_WRAPPING
 import org.hexworks.zircon.api.graphics.TextWrap.WORD_WRAP

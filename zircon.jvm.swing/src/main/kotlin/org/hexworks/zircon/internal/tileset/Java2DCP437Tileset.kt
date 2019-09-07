@@ -87,7 +87,7 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
                 fixedTile = modifier.transform(fixedTile)
             }
         }
-        val key = fixedTile.generateCacheKey()
+        val key = fixedTile.cacheKey
         val meta = lookup.fetchMetaForTile(fixedTile)
         val maybeRegion = cache.getIfPresent(key)
         return if (maybeRegion != null) {

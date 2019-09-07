@@ -31,8 +31,8 @@ import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.extensions.cancelAll
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.util.PersistentList
 import kotlin.jvm.Synchronized
@@ -89,13 +89,13 @@ class TileGridScreen(
         }.also { subscriptions.add(it) }
         Zircon.eventBus.subscribe<ZirconEvent.RequestCursorAt>(ZirconScope) { (position) ->
             if (isActive()) {
-                tileGrid.setCursorVisibility(true)
-                tileGrid.putCursorAt(position)
+                tileGrid.isCursorVisible = true
+                tileGrid.cursorPosition = position
             }
         }.also { subscriptions.add(it) }
         Zircon.eventBus.subscribe<ZirconEvent.HideCursor>(ZirconScope) {
             if (isActive()) {
-                tileGrid.setCursorVisibility(false)
+                tileGrid.isCursorVisible = false
             }
         }.also { subscriptions.add(it) }
     }
@@ -143,8 +143,8 @@ class TileGridScreen(
             Zircon.eventBus.publish(
                     event = ZirconEvent.ScreenSwitch(id),
                     eventScope = ZirconScope)
-            setCursorVisibility(false)
-            putCursorAt(Position.defaultPosition())
+            isCursorVisible = false
+            cursorPosition = Position.defaultPosition()
             activate()
             tileGrid.delegateTo(bufferGrid)
         }

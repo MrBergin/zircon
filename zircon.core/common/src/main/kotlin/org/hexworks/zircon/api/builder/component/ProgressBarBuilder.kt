@@ -35,10 +35,9 @@ data class ProgressBarBuilder(
                 .withWidth(max(steps, contentSize.width))
     }
 
-    // TODO: add a decorator instead
-//    fun withDisplayPercentValueOfProgress(displayPercentValueOfProgress: Boolean) = also {
-//        this.displayPercentValueOfProgress = displayPercentValueOfProgress
-//    }
+    fun withDisplayPercentValueOfProgress(displayPercentValueOfProgress: Boolean) = also {
+        this.displayPercentValueOfProgress = displayPercentValueOfProgress
+    }
 
 
     override fun build(): ProgressBar {

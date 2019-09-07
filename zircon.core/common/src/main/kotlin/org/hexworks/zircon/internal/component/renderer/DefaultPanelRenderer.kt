@@ -10,8 +10,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultPanel
 class DefaultPanelRenderer : ComponentRenderer<DefaultPanel> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultPanel>) {
-        val style = context.componentStyle.currentStyle()
         tileGraphics.fill(Tiles.defaultTile())
-        tileGraphics.applyStyle(style)
+        tileGraphics.applyStyle(context.currentStyle)
     }
 }

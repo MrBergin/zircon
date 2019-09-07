@@ -177,7 +177,7 @@ public class GameAreaScrollingWithLayers {
                     gameArea.scrollOneDown();
                 }
                 screen.removeLayer(coordinates.get());
-                coordinates.set(createCoordinates(gameArea.visibleOffset()));
+                coordinates.set(createCoordinates(gameArea.getVisibleOffset()));
                 screen.addLayer(coordinates.get());
             }
             return UIEventResponses.processed();
