@@ -17,8 +17,7 @@ public class LayersExample {
 
     public static void main(String[] args) {
 
-        // TODO: this doesn't show the text with libgdx!
-        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
+        final TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(CP437TilesetResources.rogueYun16x16())
                 .withSize(SIZE)
                 .withDebugMode(true)

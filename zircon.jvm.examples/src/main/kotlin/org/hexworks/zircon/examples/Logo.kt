@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.extensions.transform
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
 
+// TODO: not working
 object Logo {
 
     val size = Size.create(59, 27)

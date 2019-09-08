@@ -23,6 +23,7 @@ import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.util.BSPTree
 import java.util.*
 
+// TODO: not working
 object BSPExample {
 
     private val VISIBLE_SIZE = Sizes.create3DSize(50, 50, 1)

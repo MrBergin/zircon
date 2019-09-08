@@ -6,7 +6,8 @@ import org.hexworks.zircon.api.util.markovchain.MarkovChain
 
 data class Markov(private val chain: MarkovChain<CharacterTile>) : TileTransformModifier<CharacterTile> {
 
-    override val cacheKey = "Modifier.Markov.${chain.current().id}"
+    override val cacheKey
+        get() = "Modifier.Markov.${chain.current().id}"
 
     override fun canTransform(tile: Tile) = tile is CharacterTile
 

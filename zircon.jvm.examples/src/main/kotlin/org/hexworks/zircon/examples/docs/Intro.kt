@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.examples.AnimationExample
 
+// TODO: animation not working
 object Intro {
 
     val tileset = CP437TilesetResources.wanderlust16x16()

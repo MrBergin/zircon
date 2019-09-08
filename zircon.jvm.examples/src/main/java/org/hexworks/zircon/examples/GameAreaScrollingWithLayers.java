@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 
+// TODO: not working
 @SuppressWarnings("ALL")
 public class GameAreaScrollingWithLayers {
 

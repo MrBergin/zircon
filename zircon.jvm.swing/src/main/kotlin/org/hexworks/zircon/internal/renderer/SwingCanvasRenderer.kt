@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.renderer
 
 
 import org.hexworks.zircon.api.application.CursorStyle
+import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.LayerState
 import org.hexworks.zircon.api.data.Position
@@ -28,7 +29,6 @@ import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
-import java.util.concurrent.Executors
 import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
@@ -105,8 +105,6 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         frame.dispose()
     }
 
-    private val executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
-
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
         val bs = getBufferStrategy()
@@ -125,24 +123,24 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val tilesToRender = linkedMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
 
         layerStates.forEach { state ->
-            state.tiles.forEach { (tilePos, tile) ->
-                val finalPos = tilePos + state.position
-                tilesToRender.getOrPut(finalPos) { mutableListOf() }
-                if (tile.isOpaque) {
-                    tilesToRender[finalPos] = mutableListOf(tile to state.tileset)
-                } else {
-                    tilesToRender[finalPos]?.add(tile to state.tileset)
+            if (state.isHidden.not()) {
+                state.tiles.forEach { (tilePos, tile) ->
+                    val finalPos = tilePos + state.position
+                    tilesToRender.getOrPut(finalPos) { mutableListOf() }
+                    if (tile.isOpaque) {
+                        tilesToRender[finalPos] = mutableListOf(tile to state.tileset)
+                    } else {
+                        tilesToRender[finalPos]?.add(tile to state.tileset)
+                    }
                 }
             }
         }
 
         tilesToRender.map { (pos, tiles) ->
-            executor.submit {
-                tiles.forEach { (tile, tileset) ->
-                    renderTile(gc, pos, tile, tilesetLoader.loadTilesetFrom(tileset))
-                }
+            tiles.forEach { (tile, tileset) ->
+                renderTile(gc, pos, tile, tilesetLoader.loadTilesetFrom(tileset))
             }
-        }.forEach { it.get() }
+        }
 
 
         if (shouldDrawCursor()) {
@@ -200,14 +198,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             } else {
                 tile
             }
-            val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
+            if (actualTile is TilesetHolder) {
                 tilesetLoader.loadTilesetFrom(actualTile.tileset)
             } else {
                 tileset
-            }
-
-            actualTileset.drawTile(
-                    tile = actualTile,
+            }.drawTile(tile = actualTile,
                     surface = graphics,
                     position = position)
         }

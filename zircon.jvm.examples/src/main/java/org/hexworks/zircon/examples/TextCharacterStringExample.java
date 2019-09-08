@@ -23,17 +23,16 @@ public class TextCharacterStringExample {
         TileGrid tileGrid = app.getTileGrid();
 
         String text = "This is some text which is too long to fit on one line...";
-        Size size = Sizes.create(text.length(), 1);
         CharacterTileString tcs = CharacterTileStrings.newBuilder()
                 .withForegroundColor(TileColors.fromString("#eeffee"))
                 .withBackgroundColor(TileColors.fromString("#223344"))
                 .withTextWrap(TextWrap.WRAP)
-                .withSize(size)
+                .withSize(tileGrid.getSize())
                 .withModifiers(Modifiers.underline())
                 .withText(text)
                 .build();
 
-        tileGrid.draw(tcs, Positions.zero(), size);
+        tileGrid.draw(tcs, Positions.zero(), tileGrid.getSize());
 
     }
 }

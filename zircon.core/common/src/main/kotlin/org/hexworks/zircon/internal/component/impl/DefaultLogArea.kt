@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
@@ -115,7 +116,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
     }
 
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
-        val currentHeight = children.asSequence().map { it.height }.fold(0, Int::plus)
+        val currentHeight = children.map { it.height }.fold(0, Int::plus)
         val maxHeight = contentSize.height
         val elementHeight = element.height
         val remainingHeight = maxHeight - currentHeight
@@ -135,9 +136,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
                 child.moveUpBy(currentFreedSpace)
             }
         }
-        children.lastOrNull()?.let { lastChild ->
-            element.moveTo(lastChild.relativePosition.withRelativeY(lastChild.height))
-        }
+        element.moveTo(Positions.create(0, currentHeight))
         addComponent(element)
         if (applyTheme) {
             element.applyColorTheme(currentTheme)

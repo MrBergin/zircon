@@ -12,6 +12,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.platform.factory.PersistentListFactory
 import kotlin.jvm.Synchronized
 
+// TODO: test this thoroughly
 class ThreadSafeLayerable(initialSize: Size) : InternalLayerable {
 
     override val size: Size = initialSize
@@ -39,36 +40,45 @@ class ThreadSafeLayerable(initialSize: Size) : InternalLayerable {
 
     @Synchronized
     override fun setLayerAt(index: Int, layer: Layer) {
-        layers = layers.set(index, layer)
-        layerStates = layerStates.set(index, layer.state)
+        index.whenValidIndex {
+            layers = layers.set(index, layer)
+            layerStates = layerStates.set(index, layer.state)
+        }
     }
 
     @Synchronized
     override fun insertLayerAt(index: Int, layer: Layer) {
-        layers = layers.add(index, layer)
-        layerStates = layerStates.add(index, layer.state)
+        index.whenValidIndex {
+            layers = layers.add(index, layer)
+            layerStates = layerStates.add(index, layer.state)
+        }
     }
 
     @Synchronized
     override fun insertLayersAt(index: Int, layers: Collection<Layer>) {
-        this.layers = this.layers.addAll(index, layers)
-    }
-
-    @Synchronized
-    override fun removeLayer(layer: Layer) {
-        layers = layers.remove(layer)
-        layerStates = layerStates.removeAt(layerStates.indexOfFirst { it.id == layer.id })
+        layers.forEachIndexed { idx, layer ->
+            insertLayerAt(index + idx, layer)
+        }
     }
 
     @Synchronized
     override fun removeLayerAt(index: Int) {
-        layers = layers.removeAt(index)
-        layerStates = layerStates.removeAt(index)
+        index.whenValidIndex {
+            layers = layers.removeAt(index)
+            layerStates = layerStates.removeAt(index)
+        }
+    }
+
+    @Synchronized
+    override fun removeLayer(layer: Layer) {
+        layerStates.indexOfFirst { it.id == layer.id }.whenValidIndex { idx ->
+            removeLayerAt(idx)
+        }
     }
 
     @Synchronized
     override fun removeLayers(layers: Collection<Layer>) {
-        this.layers = this.layers.removeAll(layers)
+        layers.forEach(::removeLayer)
     }
 
     @Synchronized
@@ -79,9 +89,14 @@ class ThreadSafeLayerable(initialSize: Size) : InternalLayerable {
 
     @Synchronized
     private fun updateLayer(layerState: LayerState) {
-        val idx = layerStates.indexOfFirst { it.id == layerState.id }
-        if (idx >= 0) {
+        layerStates.indexOfFirst { it.id == layerState.id }.whenValidIndex { idx ->
             layerStates = layerStates.set(idx, layerState)
+        }
+    }
+
+    private fun Int.whenValidIndex(fn: (Int) -> Unit) {
+        if (this in 0 until layers.size) {
+            fn(this)
         }
     }
 }

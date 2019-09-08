@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
@@ -16,12 +17,12 @@ import org.hexworks.zircon.api.extensions.shadow
 object TextBoxesExample {
 
     private val theme = ColorThemes.oliveLeafTea()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val tileset = TrueTypeFontResources.kaypro(16)
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        val tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(tileset)
                 .withSize(Sizes.create(60, 30))
                 .build())

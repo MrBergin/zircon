@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.Screens
 import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.extensions.*
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
@@ -16,7 +17,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 object TextAreasExample {
 
     private val theme = ColorThemes.solarizedLightOrange()
-    private val tileset = CP437TilesetResources.rogueYun16x16()
+    private val tileset = TrueTypeFontResources.tandy(20)
 
     @JvmStatic
     fun main(args: Array<String>) {

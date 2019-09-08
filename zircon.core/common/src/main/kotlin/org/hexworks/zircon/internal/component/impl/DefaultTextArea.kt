@@ -218,7 +218,7 @@ class DefaultTextArea constructor(
         pos = pos.withY(min(pos.y, contentSize.height))
         Zircon.eventBus.publish(
                 event = ZirconEvent.RequestCursorAt(pos
-                        .withRelative(relativePosition + contentOffset)),
+                        .withRelative(position + contentOffset)),
                 eventScope = ZirconScope)
     }
 

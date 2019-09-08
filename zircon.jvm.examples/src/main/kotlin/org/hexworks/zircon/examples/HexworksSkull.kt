@@ -3,6 +3,7 @@ package org.hexworks.zircon.examples
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.animation.AnimationResource
 
+// TODO: animations not working
 object HexworksSkull {
 
     private val tileset = CP437TilesetResources.wanderlust16x16()

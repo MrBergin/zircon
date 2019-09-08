@@ -43,6 +43,7 @@ public class ColorThemeSwitcher {
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(SCREEN_SIZE)
+                .withDebugMode(true)
                 .build());
 
         Screen screen = Screens.createScreenFor(tileGrid);

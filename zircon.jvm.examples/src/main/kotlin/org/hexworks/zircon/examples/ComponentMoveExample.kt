@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.Sizes
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.extensions.box
 
+// TODO: not working
 object ComponentMoveExample {
 
     @JvmStatic

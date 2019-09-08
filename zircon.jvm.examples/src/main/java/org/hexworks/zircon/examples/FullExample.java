@@ -1,33 +1,14 @@
 package org.hexworks.zircon.examples;
 
 import kotlin.Unit;
-import org.hexworks.zircon.api.Animations;
-import org.hexworks.zircon.api.AppConfigs;
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.DrawSurfaces;
-import org.hexworks.zircon.api.Layers;
-import org.hexworks.zircon.api.Positions;
-import org.hexworks.zircon.api.REXPaintResources;
-import org.hexworks.zircon.api.Screens;
-import org.hexworks.zircon.api.Sizes;
-import org.hexworks.zircon.api.SwingApplications;
-import org.hexworks.zircon.api.TileColors;
-import org.hexworks.zircon.api.Tiles;
-import org.hexworks.zircon.api.UIEventResponses;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.animation.Animation;
 import org.hexworks.zircon.api.animation.AnimationResource;
 import org.hexworks.zircon.api.application.Application;
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder;
 import org.hexworks.zircon.api.builder.component.PanelBuilder;
-import org.hexworks.zircon.api.component.Button;
-import org.hexworks.zircon.api.component.ColorTheme;
-import org.hexworks.zircon.api.component.Header;
-import org.hexworks.zircon.api.component.Label;
-import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.component.RadioButtonGroup;
+import org.hexworks.zircon.api.component.*;
 import org.hexworks.zircon.api.component.RadioButtonGroup.Selection;
-import org.hexworks.zircon.api.component.TextBox;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
@@ -42,36 +23,16 @@ import org.hexworks.zircon.api.uievent.MouseEventType;
 import org.hexworks.zircon.internal.animation.DefaultAnimationFrame;
 import org.hexworks.zircon.internal.resource.ColorThemeResource;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static org.hexworks.zircon.api.ComponentDecorations.box;
+import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.AFTERGLOW;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.AFTER_THE_HEIST;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.AMIGA_OS;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.ENTRAPPED_IN_A_PALETTE;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.FOREST;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.GAMEBOOKERS;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.GHOST_OF_A_CHANCE;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.LET_THEM_EAT_CAKE;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.MONOKAI_BLUE;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.MONOKAI_YELLOW;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.OLIVE_LEAF_TEA;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.PABLO_NERUDA;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.SOLARIZED_LIGHT_CYAN;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.TRON;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.ZENBURN_VANILLA;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.valueOf;
-import static org.hexworks.zircon.internal.resource.ColorThemeResource.values;
+import static org.hexworks.zircon.internal.resource.ColorThemeResource.*;
 
+// TODO: not working
 public class FullExample {
 
     private static final Size PANEL_SIZE = Sizes.create(29, 8);
@@ -185,8 +146,7 @@ public class FullExample {
         Panel introPanel = Components.panel()
                 .withPosition(Positions.create(17, 3))
                 .withSize(SCREEN_SIZE.withRelativeWidth(-18).withRelativeHeight(-4))
-                .withBoxType(BoxType.SINGLE)
-                .wrapWithBox(true)
+                .withDecorations(box())
                 .build();
 
         introPanel.addComponent(Components.header()
@@ -238,17 +198,15 @@ public class FullExample {
         panelsScreen.addComponent(simplePanel);
 
         final Panel boxedPanel = PANEL_TEMPLATE.createCopy()
-                .withTitle("Boxed panel")
+                .withDecorations(box(BoxType.DOUBLE, "Boxed panel"))
                 .withPosition(Positions.create(0, 2).relativeToBottomOf(simplePanel))
-                .wrapWithBox(true)
-                .withBoxType(BoxType.DOUBLE)
                 .build();
         panelsScreen.addComponent(boxedPanel);
 
 
         final Panel panelWithShadow = PANEL_TEMPLATE.createCopy()
                 .withPosition(Positions.create(4, 0).relativeToRightOf(simplePanel))
-                .wrapWithShadow(true)
+                .withDecorations(shadow())
                 .build();
         panelWithShadow.addComponent(Components.label()
                 .withText("Panel with shadow")
@@ -259,9 +217,7 @@ public class FullExample {
 
         final Panel panelWithShadowAndBox = PANEL_TEMPLATE.createCopy()
                 .withPosition(Positions.create(0, 2).relativeToBottomOf(panelWithShadow))
-                .wrapWithShadow(true)
-                .withTitle("Panel with shadow")
-                .wrapWithBox(true)
+                .withDecorations(box(BoxType.DOUBLE, "Panel with shadow"), shadow())
                 .build();
         panelWithShadowAndBox.addComponent(Components.label()
                 .withText("and box")
@@ -271,7 +227,7 @@ public class FullExample {
 
 
         final Panel borderedPanel = PANEL_TEMPLATE.createCopy()
-                .withTitle("Bordered panel")
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Bordered panel"))
                 .withPosition(Positions.create(0, 2).relativeToBottomOf(boxedPanel))
                 .build();
         borderedPanel.addComponent(Components.label()
@@ -281,9 +237,8 @@ public class FullExample {
         panelsScreen.addComponent(borderedPanel);
 
         final Panel borderedPanelWithShadow = PANEL_TEMPLATE.createCopy()
-                .withTitle("Bordered panel")
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Bordered panel"), shadow())
                 .withPosition(Positions.create(0, 2).relativeToBottomOf(panelWithShadowAndBox))
-                .wrapWithShadow(true)
                 .build();
         borderedPanelWithShadow.addComponent(Components.label()
                 .withText("Border+shadow panel")
@@ -299,9 +254,7 @@ public class FullExample {
 
         final Panel checkBoxesPanel = PANEL_TEMPLATE.createCopy()
                 .withPosition(Positions.create(2, 4))
-                .wrapWithBox(true)
-                .withTitle("Check boxes")
-                .wrapWithShadow(true)
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Check boxes"), shadow())
                 .build();
         for (int i = 0; i < 2; i++) {
             checkBoxesPanel.addComponent(Components.checkBox()
@@ -318,9 +271,7 @@ public class FullExample {
 
         final Panel textBoxesPanel = PANEL_TEMPLATE.createCopy()
                 .withPosition(Positions.create(0, 2).relativeToBottomOf(checkBoxesPanel))
-                .wrapWithBox(true)
-                .withTitle("Text boxes")
-                .wrapWithShadow(true)
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Text boxes"), shadow())
                 .build();
         textBoxesPanel.addComponent(Components.textArea()
                 .withText("Panel" + System.lineSeparator() + "with editable text box" + System.lineSeparator() + "...")
@@ -330,9 +281,7 @@ public class FullExample {
 
         final Panel buttonsPanel = PANEL_TEMPLATE.createCopy()
                 .withPosition(Positions.create(0, 2).relativeToBottomOf(textBoxesPanel))
-                .wrapWithBox(true)
-                .withTitle("Buttons")
-                .wrapWithShadow(true)
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Buttons"), shadow())
                 .build();
         for (int i = 0; i < 3; i++) {
             buttonsPanel.addComponent(Components.button()
@@ -344,9 +293,7 @@ public class FullExample {
 
         final Panel radioPanel = PANEL_TEMPLATE.createCopy()
                 .withPosition(Positions.create(2, 0).relativeToRightOf(checkBoxesPanel))
-                .wrapWithBox(true)
-                .withTitle("Radio buttons")
-                .wrapWithShadow(true)
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Radio buttons"), shadow())
                 .build();
         final RadioButtonGroup radios = Components.radioButtonGroup()
                 .withSize(Sizes.create(15, 3))
@@ -365,7 +312,7 @@ public class FullExample {
 
         final Panel addAndRemovePanel = PANEL_TEMPLATE.createCopy()
                 .withPosition(Positions.create(2, 4))
-                .wrapWithShadow(true)
+                .withDecorations(shadow())
                 .build();
         final Button addButton = Components.button()
                 .withText("Add new panel")
@@ -433,8 +380,7 @@ public class FullExample {
         AtomicReference<Label> currentThemeLabel = new AtomicReference<>(createLabelForTheme(currentTheme.get()));
 
         final Panel infoPanel = Components.panel()
-                .wrapWithBox(true)
-                .withTitle("Current selection:")
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Current selection:"))
                 .withSize(Sizes.create(62, 3))
                 .withPosition(Positions.create(2, 4))
                 .build();
@@ -447,21 +393,18 @@ public class FullExample {
 
         final Size themePickerSize = Sizes.create(17, 24);
         final Panel solarizedLightPanel = Components.panel()
-                .withTitle("Sol. Light")
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Sol. light"))
                 .withPosition(Positions.create(0, 1).relativeToBottomOf(infoPanel))
-                .wrapWithBox(true)
                 .withSize(themePickerSize)
                 .build();
         final Panel solarizedDarkPanel = Components.panel()
-                .withTitle("Sol. Dark")
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Sol. dark"))
                 .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedLightPanel))
-                .wrapWithBox(true)
                 .withSize(themePickerSize)
                 .build();
         final Panel otherPanel = Components.panel()
-                .withTitle("Other")
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Other"))
                 .withPosition(Positions.create(1, 0).relativeToRightOf(solarizedDarkPanel))
-                .wrapWithBox(true)
                 .withSize(themePickerSize.plus(Sizes.create(9, 0)))
                 .build();
 

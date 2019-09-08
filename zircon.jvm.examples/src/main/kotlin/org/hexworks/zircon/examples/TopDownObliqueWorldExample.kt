@@ -34,6 +34,7 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.Processed
 import kotlin.random.Random
 
+// TODO: not working
 object TopDownObliqueWorldExample {
 
     private val WORLD_SIZE = Sizes.create3DSize(100, 100, 100)

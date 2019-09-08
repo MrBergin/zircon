@@ -219,9 +219,10 @@ class ThreadSafeTileGrid(
         layerable.removeLayers(layers)
     }
 
+    // TODO: regression test this (drop(0))
     @Synchronized
     override fun removeAllLayers() {
-        layers.drop(0).forEach(this::removeLayer)
+        layers.drop(1).forEach(this::removeLayer)
     }
 
     private fun moveCursorToNextLine() {

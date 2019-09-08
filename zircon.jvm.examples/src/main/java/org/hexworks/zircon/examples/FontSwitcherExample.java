@@ -57,19 +57,19 @@ public class FontSwitcherExample {
 
     private static void refreshText(TileGrid tileGrid, Position position) {
         tileGrid.setCursorPosition(position);
-        for (int i = 0; i < "Press '->' to switch Tileset!".length(); i++) {
-//            tileGrid.putCharacter("Press '->' to switch Tileset!".charAt(i));
-        }
+        String text = "Press '->' to switch Tileset!";
+        tileGrid.draw(CharacterTileStrings.newBuilder().withText(text).build());
     }
 
     private static void refreshLayer(TileGrid tileGrid, Random random) {
+        String text = "Press '<-' to switch Layer!";
         tileGrid.removeAllLayers();
         Layer layer = Layers.newBuilder()
                 .withTileset(TILESETS.get(random.nextInt(TILESETS.size())))
                 .withOffset(Positions.create(0, 1))
-                .withSize(Sizes.create("Press '<-' to switch Layer!".length(), 1))
+                .withSize(Sizes.create(text.length(), 1))
                 .build();
-//        layer.putText(text, Positions.defaultPosition());
+        layer.draw(CharacterTileStrings.newBuilder().withText(text).build());
         tileGrid.addLayer(layer);
     }
 

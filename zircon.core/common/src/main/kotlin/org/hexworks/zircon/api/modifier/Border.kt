@@ -7,7 +7,8 @@ data class Border(val borderType: BorderType,
                   val borderWidth: Int,
                   val borderPositions: Set<BorderPosition>) : TextureTransformModifier {
 
-    override val cacheKey = "Modifier.Border(t=${borderType.name},bp=[" + borderPositions.joinToString(separator = ",") { it.name } + "])"
+    override val cacheKey: String
+        get() = "Modifier.Border(t=${borderType.name},bp=[" + borderPositions.joinToString(separator = ",") { it.name } + "])"
 
     /**
      * Creates a new [Border] which has its border positions added to this border.

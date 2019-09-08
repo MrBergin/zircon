@@ -23,6 +23,7 @@ import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.graphics.Symbols
 import java.util.*
 
+// TODO: not working
 object CustomGameAreaExample {
 
     class CustomGameArea(visibleSize: Size3D,

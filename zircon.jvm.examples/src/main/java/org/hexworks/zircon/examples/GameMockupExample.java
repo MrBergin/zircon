@@ -43,7 +43,7 @@ public class GameMockupExample {
         double rows = screenSize.getHeight() / TILESET.getHeight();
         Size terminalSize = Sizes.create((int) columns, (int) rows);
 
-        final TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfigs.newConfig()
+        final TileGrid tileGrid = SwingApplications.startTileGrid(AppConfigs.newConfig()
                 .withDefaultTileset(TILESET)
                 .withSize(terminalSize)
                 .withDebugMode(true)

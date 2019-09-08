@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * Interface which adds functionality for overriding [TilesetResource]s used
  * in its implementors (components, layers, etc).
  */
-interface TilesetOverride {
+interface TilesetOverride : TilesetHolder {
 
-    var tileset: TilesetResource
+    override var tileset: TilesetResource
 }

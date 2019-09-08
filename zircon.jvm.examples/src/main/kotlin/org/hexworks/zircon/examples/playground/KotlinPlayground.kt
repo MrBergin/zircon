@@ -8,5 +8,6 @@ object KotlinPlayground {
     @JvmStatic
     fun main(args: Array<String>) {
 
+        println((0 until 10).joinToString())
     }
 }

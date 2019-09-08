@@ -26,6 +26,7 @@ import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
+// TODO: not working
 object DrawingExample {
 
     private const val TOOLS_WIDTH = 15

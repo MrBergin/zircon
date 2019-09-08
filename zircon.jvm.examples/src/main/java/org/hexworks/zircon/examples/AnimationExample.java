@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.screen.Screen;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 
+// TODO: not working
 public class AnimationExample {
 
     private static final Size TERMINAL_SIZE = Sizes.create(50, 30);

@@ -24,7 +24,7 @@ abstract class BaseTile : Tile {
     override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicalTile)
 
     override val isOpaque: Boolean
-        get() = foregroundColor.isOpaque.and(backgroundColor.isOpaque)
+        get() = backgroundColor.isOpaque
 
     override val isUnderlined: Boolean
         get() = modifiers.contains(Underline)

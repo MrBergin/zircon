@@ -13,5 +13,6 @@ enum class GameModifiers : Modifier {
     BLOCK_BOTTOM,
     BLOCK_LAYER;
 
-    override val cacheKey = "Modifier.GameModifier.$name"
+    override val cacheKey: String
+        get() = "Modifier.GameModifier.$name"
 }
