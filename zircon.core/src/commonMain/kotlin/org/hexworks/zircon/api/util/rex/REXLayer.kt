@@ -1,5 +1,7 @@
-package org.hexworks.zircon.internal.util.rex
+package org.hexworks.zircon.api.util.rex
 
+import com.soywiz.korio.stream.SyncStream
+import com.soywiz.korio.stream.readS32LE
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -7,7 +9,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.resource.TilesetResource
-import java.nio.ByteBuffer
 
 /**
  * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [REXCell]s.
@@ -58,16 +59,17 @@ data class REXLayer(private val width: Int,
          * Factory method for [REXLayer], which reads out Layer information from a [ByteBuffer].
          * This automatically generates [REXCell] objects from the data provided.
          */
-        fun fromByteBuffer(buffer: ByteBuffer): REXLayer {
-            val width = buffer.int
-            val height = buffer.int
+        fun fromSyncStream(syncStream: SyncStream): REXLayer {
+            val width = syncStream.readS32LE()
+            val height = syncStream.readS32LE()
 
             val cells: MutableList<REXCell> = mutableListOf()
             for (i in 0 until width * height) {
-                cells.add(REXCell.fromByteBuffer(buffer))
+                cells.add(REXCell.fromSyncStream(syncStream))
             }
 
             return REXLayer(width, height, cells)
         }
+
     }
 }

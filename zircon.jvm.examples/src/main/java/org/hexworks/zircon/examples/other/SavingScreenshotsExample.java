@@ -28,7 +28,8 @@ public class SavingScreenshotsExample {
         final Tileset<Graphics2D> tileset = loader.loadTilesetFrom(CP437TilesetResources.rexPaint20x20());
 
         // you draw tiles on the image using the graphics
-        tileset.drawTile(Tile.newBuilder()
+
+        /*tileset.drawTile(Tile.newBuilder()
                 .withCharacter('a')
                 .withBackgroundColor(ANSITileColor.RED)
                 .withForegroundColor(ANSITileColor.WHITE)
@@ -40,8 +41,9 @@ public class SavingScreenshotsExample {
                 .withForegroundColor(ANSITileColor.YELLOW)
                 .build(), graphics, Position.create(1, 0));
 
+
         // and you write the result into a file
-        ImageIO.write(image, "png", new File("saved.png"));
+        ImageIO.write(image, "png", new File("saved.png"));*/
 
     }
 }

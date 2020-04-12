@@ -26,6 +26,7 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Inser
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
+import kotlin.js.JsName
 
 //TODO: Finish minValue impl. and bug fixing
 abstract class BaseNumberInput(
@@ -52,6 +53,7 @@ abstract class BaseNumberInput(
             }
         }
 
+    @JsName("textBufferProp")
     protected var textBuffer = EditableTextBuffer.create("$initialValue")
     abstract var maxNumberLength: Int
     private var textBeforeModifications = ""

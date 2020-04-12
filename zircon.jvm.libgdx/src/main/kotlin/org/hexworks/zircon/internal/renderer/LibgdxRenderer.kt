@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import kotlinx.coroutines.runBlocking
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Maybes
@@ -60,10 +61,10 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
         whitePixmap.dispose()
     }
 
-    override fun render() {
+    override suspend fun render() {
         if (debug) {
             RunTimeStats.addTimedStatFor("debug.render.time") {
-                doRender(Gdx.app.graphics.deltaTime)
+                runBlocking { doRender(Gdx.app.graphics.deltaTime) }
             }
         } else doRender(Gdx.app.graphics.deltaTime)
     }
@@ -73,18 +74,20 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
         maybeBatch.map(SpriteBatch::dispose)
     }
 
-    private fun doRender(delta: Float) {
+    private suspend fun doRender(delta: Float) {
         handleBlink(delta)
 
         maybeBatch.map { batch ->
             batch.begin()
             grid.layerStates.forEach { state ->
-                renderTiles(
-                        batch = batch,
-                        state = state,
-                        tileset = tilesetLoader.loadTilesetFrom(grid.tileset),
-                        offset = state.position.toPixelPosition(grid.tileset)
-                )
+                runBlocking {
+                    renderTiles(
+                            batch = batch,
+                            state = state,
+                            tileset = tilesetLoader.loadTilesetFrom(grid.tileset),
+                            offset = state.position.toPixelPosition(grid.tileset)
+                    )
+                }
             }
             batch.end()
             cursorRenderer.projectionMatrix = batch.projectionMatrix
@@ -96,7 +99,7 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
         }
     }
 
-    private fun renderTiles(batch: SpriteBatch,
+    private suspend fun renderTiles(batch: SpriteBatch,
                             state: LayerState,
                             tileset: Tileset<SpriteBatch>,
                             offset: PixelPosition = PixelPosition(0, 0)) {

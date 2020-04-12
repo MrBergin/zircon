@@ -51,7 +51,7 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource)
         font = Assets.MANAGER.get("font.ttf")
     }
 
-    override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
+    override suspend fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
         val x = position.x.toFloat()
         val y = position.y.toFloat()
         val tileTex = fetchTextureForTile(tile) as OffsetTileTexture

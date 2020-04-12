@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
+import kotlinx.coroutines.runBlocking
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -29,7 +30,7 @@ class VirtualRenderer(
         tileGrid.close()
     }
 
-    override fun render() {
+    override suspend fun render() {
         val now = SystemUtils.getCurrentTimeMs()
         tileGrid.layerStates.forEach {
             renderTiles(it)
@@ -41,7 +42,7 @@ class VirtualRenderer(
     private fun renderTiles(state: TileGraphicsState) {
         state.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
-                tileset.drawTile(tile, 'x', pos)
+                runBlocking { tileset.drawTile(tile, 'x', pos) }
             }
         }
     }

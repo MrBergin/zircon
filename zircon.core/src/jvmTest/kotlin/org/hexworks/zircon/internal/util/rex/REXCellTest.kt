@@ -1,6 +1,8 @@
 package org.hexworks.zircon.internal.util.rex
 
+import com.soywiz.korio.stream.openSync
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.util.rex.REXCell
 import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
@@ -21,10 +23,8 @@ class REXCellTest {
         for ((i, b) in raw.withIndex()) {
             ba[i] = b.toByte()
         }
-        val buffer = ByteBuffer.wrap(ba)
-        buffer.order(ByteOrder.LITTLE_ENDIAN)
 
-        val cell = REXCell.fromByteBuffer(buffer)
+        val cell = REXCell.fromSyncStream(ba.openSync())
 
         assertThat(cell.getCharacter()).isEqualTo('A')
         assertThat(cell.getForegroundColor()).isEqualTo(Color(170, 170, 170))

@@ -1,34 +1,24 @@
 package org.hexworks.zircon.internal.animation
 
-@Suppress("unused")
-internal data class AnimationMetadata(var type: String,
+import kotlinx.serialization.Serializable
+
+@Serializable
+internal data class AnimationMetadata(var type: String = "",
                                       var animationData: AnimationData) {
-    constructor() : this(
-            type = "",
-            animationData = AnimationData())
 
 
-    data class AnimationData(var frameCount: Int,
-                             var frameRate: Int,
-                             var length: Int,
-                             var loopCount: Int,
-                             var baseName: String,
-                             var extension: String,
-                             var frameMap: List<Frame>) {
-        constructor() : this(
-                frameCount = -1,
-                frameRate = -1,
-                length = -1,
-                loopCount = -1,
-                baseName = "",
-                extension = "xp",
-                frameMap = listOf())
+    @Serializable
+    data class AnimationData(var frameCount: Int = -1,
+                             var frameRate: Int = -1,
+                             var length: Int = -1,
+                             var loopCount: Int = -1,
+                             var baseName: String = "",
+                             var extension: String = "xp",
+                             var frameMap: List<Frame> = listOf()) {
     }
 
-    data class Frame(var frame: Int,
+    @Serializable
+    data class Frame(var frame: Int = -1,
                      var repeatCount: Int = 1) {
-        constructor() : this(
-                frame = -1,
-                repeatCount = 1)
     }
 }

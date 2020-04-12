@@ -1,10 +1,14 @@
 package org.hexworks.zircon.internal.util.rex
 
+import com.soywiz.korio.stream.SyncStream
+import com.soywiz.korio.stream.openSync
+import com.sun.corba.se.impl.orbutil.concurrent.Sync
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.util.rex.REXLayer
 import org.hexworks.zircon.internal.color.DefaultTileColor
 import org.junit.Before
 import org.junit.Ignore
@@ -18,7 +22,7 @@ class REXLayerTest {
 
     @Before
     fun setUp() {
-        target = REXLayer.fromByteBuffer(createTestData())
+        target = REXLayer.fromSyncStream(createTestData())
     }
 
     @Test
@@ -61,7 +65,7 @@ class REXLayerTest {
         assertThat(target.getHeight()).isEqualTo(1)
     }
 
-    private fun createTestData(): ByteBuffer {
+    private fun createTestData(): SyncStream {
         val raw = arrayOf(
                 // layer size
                 0x02, 0x00, 0x00, 0x00, // xLength
@@ -79,9 +83,7 @@ class REXLayerTest {
         for ((i, b) in raw.withIndex()) {
             ba[i] = b.toByte()
         }
-        val buffer = ByteBuffer.wrap(ba)
-        buffer.order(ByteOrder.LITTLE_ENDIAN)
-        return buffer
+        return ba.openSync()
     }
 
     private fun assertChar(expChar: Char, expBgColor: DefaultTileColor, expFgColor: DefaultTileColor, textChar: Tile) {

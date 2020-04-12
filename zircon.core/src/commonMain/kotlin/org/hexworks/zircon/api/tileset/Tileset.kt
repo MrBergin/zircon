@@ -38,5 +38,5 @@ interface Tileset<T : Any> : Identifiable {
      * given `position`. Does nothing if the `tile` is not
      * supported by this [Tileset].
      */
-    fun drawTile(tile: Tile, surface: T, position: Position)
+    suspend fun drawTile(tile: Tile, surface: T, position: Position)
 }

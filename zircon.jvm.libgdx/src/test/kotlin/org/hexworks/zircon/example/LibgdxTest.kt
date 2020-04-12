@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import kotlinx.coroutines.runBlocking
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.DrawSurfaces
@@ -105,7 +106,7 @@ class LibgdxTest : ApplicationAdapter() {
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++
 
-            renderer.render()
+            runBlocking { renderer.render() }
             camera.update()
         }
     }

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.renderer
 
 
+import kotlinx.coroutines.runBlocking
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
@@ -64,7 +65,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         frame.isResizable = false
         frame.addWindowStateListener {
             if (it.newState == Frame.NORMAL) {
-                render()
+                runBlocking { render() }
             }
         }
 
@@ -115,13 +116,14 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         }
     }
 
-    override fun render() {
+    override suspend fun render() {
         val now = SystemUtils.getCurrentTimeMs()
 
         keyboardEventListener.drainEvents().forEach { (event, phase) ->
             tileGrid.process(event, phase)
         }
         mouseEventListener.drainEvents().forEach { (event, phase) ->
+            println(event)
             tileGrid.process(event, phase)
         }
         tileGrid.updateAnimations(now, tileGrid)
@@ -214,7 +216,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         return gc
     }
 
-    private fun renderTile(graphics: Graphics2D,
+    private suspend fun renderTile(graphics: Graphics2D,
                            position: Position,
                            tile: Tile,
                            tileset: Tileset<Graphics2D>) {

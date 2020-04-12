@@ -50,7 +50,7 @@ class LibgdxTileset(override val width: Int,
         Assets.MANAGER.get(Assets.getCP437TextureDescriptor(path))
     }
 
-    override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
+    override suspend fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
         val x = position.x.toFloat()
         val y = position.y.toFloat()
         val tileSprite = Sprite(fetchTextureForTile(tile).texture)

@@ -12,7 +12,7 @@ interface Renderer : Closeable {
     /**
      * Called when the [Renderer] should render.
      */
-    fun render()
+    suspend fun render()
 
     /**
      * Called when the [Renderer] is destroyed.

@@ -49,7 +49,7 @@ class TextBuffer(text: String) {
                 list.add(if (requestedColsHaveNoIntersectionWithBuffer(fromCol, toCol, row)) {
                     ""
                 } else {
-                    row.substring(fromCol, toCol)
+                    (row as CharSequence).substring(fromCol, toCol)
                 })
                 rowIdx++
             } while (rowIdx <= toRow)

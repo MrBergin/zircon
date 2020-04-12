@@ -1,5 +1,8 @@
 package org.hexworks.zircon.examples.animations
 
+import com.soywiz.korio.file.std.openAsZip
+import com.soywiz.korio.stream.openAsync
+import kotlinx.coroutines.runBlocking
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.SwingApplications
@@ -20,7 +23,7 @@ object ZirconLogoExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val rex = REXPaintResource.loadREXFile(RexLoaderExampleJava::class.java.getResourceAsStream("/rex_files/zircon_logo.xp"))
+        val rex = runBlocking { REXPaintResource.loadREXFile(RexLoaderExampleJava::class.java.getResource("/rex_files/zircon_logo.xp").readBytes().openAsync().openAsZip()) }
 
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.rexPaint20x20())

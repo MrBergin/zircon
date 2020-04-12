@@ -13,7 +13,6 @@ import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import kotlin.jvm.Synchronized
 
-@Suppress("DuplicatedCode")
 class DefaultCheckBox(
         componentMetadata: ComponentMetadata,
         initialText: String,

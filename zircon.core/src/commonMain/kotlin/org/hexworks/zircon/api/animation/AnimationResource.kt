@@ -1,38 +1,38 @@
 package org.hexworks.zircon.api.animation
 
+import com.soywiz.korio.compression.deflate.GZIP
+import com.soywiz.korio.compression.uncompress
+import com.soywiz.korio.file.VfsFile
+import com.soywiz.korio.file.baseName
+import kotlinx.coroutines.channels.toList
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.AnimationMetadata
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
-import org.hexworks.zircon.internal.util.rex.unZipIt
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.Constructor
-import java.io.InputStream
+
+inline fun <K, V> MutableMap<K, V>.computeWhenAbsent(key: K, remapper: (K) -> V) = this[key]
+        ?: remapper(key).also { this[key] = it }
 
 class AnimationResource {
 
-
-    // TODO: this needs to be refactored to support multiplatform code at some point
     companion object {
 
         /**
          * Loads the data of an animation from the given animation file returns an
          * [AnimationBuilder] which contains the loaded data.
          */
-        @JvmStatic
-        fun loadAnimationFromStream(zipStream: InputStream, tileset: TilesetResource): AnimationBuilder {
-            val files = unZipIt(zipStream, createTempDir())
-            val tileInfoSource = files.first { it.name == "animation.yml" }.bufferedReader().use {
-                it.readText()
-            }
-            val animDataFile = Yaml(Constructor(AnimationMetadata::class.java))
-            val (_, animationData) = animDataFile.load(tileInfoSource) as AnimationMetadata
+        suspend fun loadAnimationFromStream(zipStream: VfsFile, tileset: TilesetResource): AnimationBuilder {
+            val files = unZipIt(zipStream)
+            val tileInfoSource = files.first { it.baseName == "animation.json" }.readString()
+            val (_, animationData) = Json(JsonConfiguration.Stable).parse(AnimationMetadata.serializer(), tileInfoSource)
             val frameMap = mutableMapOf<Int, DefaultAnimationFrame>()
             val frames = animationData.frameMap.map { frame ->
                 val fileName = "${animationData.baseName}${frame.frame}.xp"
-                frameMap.computeIfAbsent(frame.frame) {
-                    val frameImage = REXPaintResource.loadREXFile(files.first { it.name == fileName }.inputStream())
+                frameMap.computeWhenAbsent(frame.frame) {
+                    val frameImage = REXPaintResource.loadREXFile(files.first { it.baseName == fileName })
                     val size = frameImage.toLayerList(tileset).maxBy { it.size }!!.size
                     DefaultAnimationFrame(
                             size = size,
@@ -48,4 +48,16 @@ class AnimationResource {
                     .addFrames(frames)
         }
     }
+}
+
+
+/**
+ * Takes a GZIP-compressed [ByteArray] and returns it decompressed.
+ */
+fun decompressGZIPByteArray(compressedData: ByteArray): ByteArray {
+    return compressedData.uncompress(GZIP)
+}
+
+suspend fun unZipIt(zipSource: VfsFile): List<VfsFile> {
+    return zipSource.list().toList()
 }

@@ -11,7 +11,6 @@ import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
-@Suppress("DuplicatedCode")
 class DefaultRadioButton(
         componentMetadata: ComponentMetadata,
         initialText: String,

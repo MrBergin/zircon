@@ -1,7 +1,6 @@
-package org.hexworks.zircon.internal.util.rex
+package org.hexworks.zircon.api.util.rex
 
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import com.soywiz.korio.stream.*
 
 /**
  * Represents a REX Paint File, which contains version and [REXLayer] information.
@@ -17,22 +16,20 @@ data class REXFile(private val version: Int,
     fun getLayers() = layers
 
     companion object {
-
         /**
          * Factory method for [REXFile]. It takes an uncompressed [ByteArray] argument and reads out the REX Paint
          * [REXFile] object as defined in the <a href="http://www.gridsagegames.com/rexpaint/manual.txt">REX
          * Paint manual</a>.
          */
         fun fromByteArray(data: ByteArray): REXFile {
-            val buffer = ByteBuffer.wrap(data)
-            buffer.order(ByteOrder.LITTLE_ENDIAN)
+            val syncStream = MemorySyncStream(data)
 
-            val version = buffer.int
-            val numberOfLayers = buffer.int
+            val version = syncStream.readS32LE()
+            val numberOfLayers = syncStream.readS32LE()
 
             val layers: MutableList<REXLayer> = mutableListOf()
             for (i in 0 until numberOfLayers) {
-                layers.add(REXLayer.fromByteBuffer(buffer))
+                layers.add(REXLayer.fromSyncStream(syncStream))
             }
 
             return REXFile(version, numberOfLayers, layers)

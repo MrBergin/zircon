@@ -41,7 +41,6 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 import kotlin.jvm.Synchronized
 
-@Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
         componentMetadata: ComponentMetadata,
         private val renderer: ComponentRenderingStrategy<out Component>,

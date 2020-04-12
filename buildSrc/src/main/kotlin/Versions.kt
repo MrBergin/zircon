@@ -1,10 +1,13 @@
 object Versions {
 
-    const val kotlinVersion = "1.3.61"
-    const val kotlinxCoroutinesVersion = "1.3.2"
+    const val kotlinVersion = "1.3.71"
+    const val kotlinxCoroutinesVersion = "1.3.3"
     const val kotlinxCollectionsImmutableVersion = "0.3"
+    const val kotlinxSerializationVersion = "0.20.0"
 
     const val cobaltVersion = "2020.0.15-PREVIEW"
+
+    const val korlibsVersion = "1.9.8"
 
     const val caffeineVersion = "2.5.4"
     const val snakeyamlVersion = "1.18"

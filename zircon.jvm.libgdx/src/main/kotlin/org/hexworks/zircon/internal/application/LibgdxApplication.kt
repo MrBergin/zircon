@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.application
 
 import com.badlogic.gdx.utils.Disposable
+import kotlinx.coroutines.runBlocking
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
@@ -30,7 +31,7 @@ class LibgdxApplication(appConfig: AppConfig,
     fun render() {
         if (paused.not() && started) {
             beforeRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
-            renderer.render()
+            runBlocking { renderer.render() }
             afterRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
         }
     }

@@ -1,28 +1,24 @@
 package org.hexworks.zircon.internal.application
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.platform.util.SystemUtils
-import java.util.concurrent.Executors
+import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.Synchronized
 
 abstract class BaseApplication(
-        private val config: AppConfig,
-        override val tileGrid: TileGrid) : Application, CoroutineScope {
+        config: AppConfig,
+        override val tileGrid: TileGrid,
+        override val coroutineContext: CoroutineContext
+) : Application, CoroutineScope {
 
     abstract val renderer: Renderer
-
-    override val coroutineContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher() + SupervisorJob()
 
     private val beforeRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
     private val afterRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
@@ -87,15 +83,17 @@ abstract class BaseApplication(
         listener(it.newValue)
     }
 
-    private fun doRender() {
+    private suspend fun doRender() {
         beforeRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
-        if (config.debugMode) {
+        //TODO fix this to work in multiplatform
+        /*if (config.debugMode) {
             RunTimeStats.addTimedStatFor("debug.render.time") {
                 renderer.render()
             }
         } else {
             renderer.render()
-        }
+        }*/
+        renderer.render()
         afterRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
     }
 }

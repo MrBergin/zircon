@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.util.rex.REXFile
 import org.junit.Test
 
 class REXFileTest {

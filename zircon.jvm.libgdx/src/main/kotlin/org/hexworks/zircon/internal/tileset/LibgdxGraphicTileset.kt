@@ -76,7 +76,7 @@ class LibgdxGraphicTileset(private val resource: TilesetResource)
     }
 
     @Suppress("UNUSED_VARIABLE")
-    override fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
+    override suspend fun drawTile(tile: Tile, surface: SpriteBatch, position: Position) {
         val x = position.x.toFloat()
         val y = position.y.toFloat()
         val tileSprite = Sprite(fetchTextureForTile(tile).texture)

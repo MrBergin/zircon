@@ -41,7 +41,7 @@ class LibgdxImageDictionaryTileset(resource: TilesetResource)
         }
     }
 
-    override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
+    override suspend fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
         val texture = fetchTextureForTile(tile)
         val x = position.x * width
         val y = position.y * height

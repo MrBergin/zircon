@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples.other;
 
+import kotlin.io.ByteStreamsKt;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
@@ -10,6 +11,7 @@ import org.hexworks.zircon.api.resource.REXPaintResource;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
@@ -21,7 +23,10 @@ public class RexLoaderExampleJava {
     private static final InputStream RESOURCE = RexLoaderExampleJava.class.getResourceAsStream("/rex_files/cp437_table.xp");
 
     public static void main(String[] args) {
-        REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteStreamsKt.copyTo(RESOURCE, baos, 8 * 1024);
+        REXPaintResource rex = REXPaintResource.loadREXFile(baos.toByteArray());
 
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.taffer20x20())

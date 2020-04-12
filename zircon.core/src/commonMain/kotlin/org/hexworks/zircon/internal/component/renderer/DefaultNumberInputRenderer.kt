@@ -4,11 +4,11 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
+import org.hexworks.zircon.internal.component.impl.BaseNumberInput
 
-class DefaultNumberInputRenderer : ComponentRenderer<DefaultHorizontalNumberInput> {
+class DefaultNumberInputRenderer : ComponentRenderer<BaseNumberInput> {
 
-    override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultHorizontalNumberInput>) {
+    override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<BaseNumberInput>) {
         val component = context.component
         val style = context.currentStyle
         tileGraphics.applyStyle(style)
